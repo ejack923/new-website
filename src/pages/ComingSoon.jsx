@@ -1,8 +1,10 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 export default function ComingSoon() {
   const [open, setOpen] = useState(false);
   const [inquiry, setInquiry] = useState("");
+  const navigate = useNavigate();
 
   return (
     <div className="min-h-screen bg-white text-neutral-900 font-sans">
@@ -21,12 +23,20 @@ export default function ComingSoon() {
             </div>
           </div>
 
-          <button
-            onClick={() => setOpen(true)}
-            className="hidden rounded-full bg-blue-600 px-5 py-2 text-sm font-medium text-white transition hover:bg-blue-700 md:inline-flex"
-          >
-            Get in touch
-          </button>
+          <div className="hidden items-center gap-3 md:flex">
+            <button
+              onClick={() => navigate("/client-login")}
+              className="rounded-full border border-neutral-200 px-5 py-2 text-sm font-medium text-neutral-700 transition hover:border-neutral-400"
+            >
+              Client Login
+            </button>
+            <button
+              onClick={() => setOpen(true)}
+              className="rounded-full bg-blue-600 px-5 py-2 text-sm font-medium text-white transition hover:bg-blue-700"
+            >
+              Get in touch
+            </button>
+          </div>
         </div>
       </header>
 
@@ -58,6 +68,12 @@ export default function ComingSoon() {
               className="inline-flex items-center justify-center rounded-full bg-blue-600 px-6 py-3 text-sm font-medium text-white transition hover:bg-blue-700"
             >
               Get in touch
+            </button>
+            <button
+              onClick={() => navigate("/client-login")}
+              className="inline-flex items-center justify-center rounded-full border border-neutral-200 px-6 py-3 text-sm font-medium text-neutral-700 transition hover:border-neutral-400"
+            >
+              Client Login
             </button>
           </div>
         </div>

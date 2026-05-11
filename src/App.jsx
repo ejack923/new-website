@@ -4,6 +4,8 @@ import ComingSoon from "./pages/ComingSoon";
 import WorkflowTools from "./pages/WorkflowTools";
 import Services from "./pages/Services";
 import Pricing from "./pages/Pricing";
+import ClientLogin from "./pages/ClientLogin";
+import ClientPortal from "./pages/ClientPortal";
 
 export default function App() {
   return (
@@ -13,6 +15,9 @@ export default function App() {
       <Route path="/workflow-tools" element={<WorkflowTools />} />
       <Route path="/services" element={<Services />} />
       <Route path="/workflow-tools-access" element={<Pricing />} />
+      <Route path="/client-login" element={<ClientLogin />} />
+      <Route path="/client-portal" element={<ClientPortal />} />
     </Routes>
   );
 }
+
