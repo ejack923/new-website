@@ -51,7 +51,7 @@ export default function ClientPortal() {
         <div className="mt-10 grid grid-cols-1 gap-6 sm:grid-cols-2">
           {/* Certification Form Card */}
           <a
-            href="https://eas-certsheet.vercel.app"
+            href="https://www.completelawsupport.com/EASLegalCertification"
             target="_blank"
             rel="noopener noreferrer"
             className="group block border border-neutral-200 p-6 transition hover:border-blue-300 hover:shadow-md"
