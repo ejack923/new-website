@@ -1,12 +1,5 @@
 {
   "rewrites": [
     { "source": "/(.*)", "destination": "/index.html" }
-  ],
-  "redirects": [
-    {
-      "source": "/EASLegalCertification",
-      "destination": "https://eas-certsheet.vercel.app",
-      "permanent": false
-    }
   ]
 }
