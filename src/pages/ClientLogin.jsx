@@ -1,7 +1,8 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-const PASSWORD = "EASLegal2025";
+const EAS_PASSWORD = "EASLegal2025";
+const VALS_PASSWORD = "VALS2025";
 
 export default function ClientLogin() {
   const [input, setInput] = useState("");
@@ -10,9 +11,12 @@ export default function ClientLogin() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (input === PASSWORD) {
-      sessionStorage.setItem("cls_auth", "true");
-      navigate("/client-portal");
+    if (input === EAS_PASSWORD) {
+      sessionStorage.setItem("cls_auth", "eas");
+      navigate("/eas-portal");
+    } else if (input === VALS_PASSWORD) {
+      sessionStorage.setItem("cls_auth", "vals");
+      navigate("/vals-portal");
     } else {
       setError(true);
       setInput("");
