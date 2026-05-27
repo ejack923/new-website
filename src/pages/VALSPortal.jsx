@@ -16,10 +16,10 @@ export default function VALSPortal() {
   };
 
   return (
-    <div className="min-h-screen bg-white font-sans flex flex-col">
+    <div className="h-screen bg-white font-sans flex flex-col overflow-hidden">
       {/* Header */}
-      <header className="border-b border-neutral-200 bg-white">
-        <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-5 lg:px-10">
+      <header className="border-b border-neutral-200 bg-white shrink-0">
+        <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4 lg:px-10">
           <div className="flex items-center gap-5">
             <div className="flex flex-col items-start justify-center leading-none">
               <div className="text-[12px] font-medium tracking-[0.3em] text-neutral-900">CLS</div>
@@ -39,38 +39,15 @@ export default function VALSPortal() {
         </div>
       </header>
 
-      {/* Portal Content */}
-      <main className="mx-auto w-full max-w-4xl px-6 py-16 lg:px-10">
-        <p className="mb-2 text-xs uppercase tracking-[0.3em] text-neutral-500">VALS Portal</p>
-        <div className="mb-6 h-[1.5px] w-12 bg-red-600" />
-        <h1 className="text-3xl font-semibold text-neutral-900">Your Tools</h1>
-        <p className="mt-3 text-sm text-neutral-500 leading-6">
-          Access your workflow tools and resources below.
-        </p>
-
-        <div className="mt-10 grid grid-cols-1 gap-6 sm:grid-cols-2">
-          {/* VALS Certification Form Card */}
-          <a
-            href="https://www.completelawsupport.com/VALSCertification"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="group block border border-neutral-200 p-6 transition hover:border-red-300 hover:shadow-md"
-          >
-            <div className="mb-4 flex h-10 w-10 items-center justify-center bg-red-50 text-red-600">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                <path d="M6 9V2h12v7"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/>
-              </svg>
-            </div>
-            <h2 className="text-base font-semibold text-neutral-900 group-hover:text-red-600 transition">
-              VALS Guideline Certification
-            </h2>
-            <p className="mt-2 text-sm text-neutral-500 leading-6">
-              Complete and export VLA guideline compliance certificates for VALS matters.
-            </p>
-            <p className="mt-4 text-xs font-medium text-red-600">Open tool →</p>
-          </a>
-        </div>
-      </main>
+      {/* Embed VALS Portal Tools Dashboard */}
+      <div className="flex-1 w-full relative bg-[#F8F9FA]">
+        <iframe
+          src="https://emma-frontend-blush.vercel.app/vals-portal?back=https://completelawsupport.com/vals-portal"
+          title="VALS Portal"
+          className="absolute inset-0 w-full h-full border-none"
+          allow="print"
+        />
+      </div>
     </div>
   );
 }
