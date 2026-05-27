@@ -40,7 +40,7 @@ export default function VALSPortal() {
       </header>
 
       {/* Embed VALS Portal Tools Dashboard */}
-      <div className="flex-1 w-full relative bg-[#F8F9FA]">
+      <div className="flex-1 w-full relative bg-white">
         <iframe
           src="https://emma-frontend-blush.vercel.app/vals-portal?back=https://completelawsupport.com/vals-portal"
           title="VALS Portal"
