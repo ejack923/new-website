@@ -13,10 +13,8 @@ export default function ClientLogin() {
 
   // Mode states
   const [isRegistering, setIsRegistering] = useState(false);
-  const [loginTab, setLoginTab] = useState("code"); // "code" or "email"
 
   // Login inputs
-  const [accessCodeInput, setAccessCodeInput] = useState("");
   const [emailInput, setEmailInput] = useState("");
   const [passwordInput, setPasswordInput] = useState("");
 
@@ -76,31 +74,19 @@ export default function ClientLogin() {
     setErrorMsg("");
     setSuccessMsg("");
 
-    if (loginTab === "code") {
-      // 1. Check shared access code fallback
-      const portal = getPortalFromCode(accessCodeInput);
-      if (portal) {
-        sessionStorage.setItem("cls_auth", portal);
-        navigate(`/${portal}-portal`);
-      } else {
-        setErrorMsg("Incorrect access code. Please try again.");
-        setAccessCodeInput("");
-      }
-    } else {
-      // 2. Check registered credentials in localStorage
-      const normalizedEmail = emailInput.trim().toLowerCase();
-      const users = getUsers();
-      const matchedUser = users.find(
-        (u) => u.email.toLowerCase() === normalizedEmail && u.password === passwordInput
-      );
+    // Check registered credentials in localStorage
+    const normalizedEmail = emailInput.trim().toLowerCase();
+    const users = getUsers();
+    const matchedUser = users.find(
+      (u) => u.email.toLowerCase() === normalizedEmail && u.password === passwordInput
+    );
 
-      if (matchedUser) {
-        sessionStorage.setItem("cls_auth", matchedUser.portal);
-        navigate(`/${matchedUser.portal}-portal`);
-      } else {
-        setErrorMsg("Invalid email address or password. Please try again.");
-        setPasswordInput("");
-      }
+    if (matchedUser) {
+      sessionStorage.setItem("cls_auth", matchedUser.portal);
+      navigate(`/${matchedUser.portal}-portal`);
+    } else {
+      setErrorMsg("Invalid email address or password. Please try again.");
+      setPasswordInput("");
     }
   };
 
@@ -158,7 +144,6 @@ export default function ClientLogin() {
   const clearFormStates = () => {
     setErrorMsg("");
     setSuccessMsg("");
-    setAccessCodeInput("");
     setEmailInput("");
     setPasswordInput("");
     setRegFirmCode("");
@@ -204,7 +189,7 @@ export default function ClientLogin() {
           <p className="mt-3 text-sm text-neutral-500 leading-6">
             {isRegistering
               ? "Create your personal login and password using your firm's access code."
-              : "Enter your access code or personal login to reach the client portal."}
+              : "Enter your personal email and password to reach the client portal."}
           </p>
 
           {/* Feedback Messages */}
@@ -230,85 +215,38 @@ export default function ClientLogin() {
           {!isRegistering ? (
             /* SIGN IN VIEW */
             <div className="mt-6">
-              {/* Tab Selector */}
-              <div className="flex border-b border-neutral-100 mb-6">
-                <button
-                  type="button"
-                  onClick={() => { setLoginTab("code"); setErrorMsg(""); }}
-                  className={`flex-1 pb-3 text-xs uppercase tracking-wider font-semibold text-center border-b-2 transition ${
-                    loginTab === "code"
-                      ? "border-blue-600 text-blue-600"
-                      : "border-transparent text-neutral-400 hover:text-neutral-600"
-                  }`}
-                >
-                  Access Code
-                </button>
-                <button
-                  type="button"
-                  onClick={() => { setLoginTab("email"); setErrorMsg(""); }}
-                  className={`flex-1 pb-3 text-xs uppercase tracking-wider font-semibold text-center border-b-2 transition ${
-                    loginTab === "email"
-                      ? "border-blue-600 text-blue-600"
-                      : "border-transparent text-neutral-400 hover:text-neutral-600"
-                  }`}
-                >
-                  Email & Password
-                </button>
-              </div>
-
               <form onSubmit={handleLoginSubmit} className="space-y-4">
-                {loginTab === "code" ? (
-                  <div>
-                    <label className="block text-xs uppercase tracking-[0.2em] text-neutral-500 mb-2">
-                      Access Code
-                    </label>
-                    <input
-                      type="password"
-                      value={accessCodeInput}
-                      onChange={(e) => { setAccessCodeInput(e.target.value); setErrorMsg(""); }}
-                      placeholder="Enter access code"
-                      className={`w-full border px-4 py-3 text-sm outline-none transition focus:border-blue-600 ${
-                        errorMsg ? "border-red-400 bg-red-50" : "border-neutral-200"
-                      }`}
-                      required
-                      autoFocus
-                    />
-                  </div>
-                ) : (
-                  <>
-                    <div>
-                      <label className="block text-xs uppercase tracking-[0.2em] text-neutral-500 mb-2">
-                        Email Address
-                      </label>
-                      <input
-                        type="email"
-                        value={emailInput}
-                        onChange={(e) => { setEmailInput(e.target.value); setErrorMsg(""); }}
-                        placeholder="Enter email address"
-                        className={`w-full border px-4 py-3 text-sm outline-none transition focus:border-blue-600 ${
-                          errorMsg ? "border-red-400 bg-red-50" : "border-neutral-200"
-                        }`}
-                        required
-                        autoFocus
-                      />
-                    </div>
-                    <div>
-                      <label className="block text-xs uppercase tracking-[0.2em] text-neutral-500 mb-2">
-                        Password
-                      </label>
-                      <input
-                        type="password"
-                        value={passwordInput}
-                        onChange={(e) => { setPasswordInput(e.target.value); setErrorMsg(""); }}
-                        placeholder="Enter password"
-                        className={`w-full border px-4 py-3 text-sm outline-none transition focus:border-blue-600 ${
-                          errorMsg ? "border-red-400 bg-red-50" : "border-neutral-200"
-                        }`}
-                        required
-                      />
-                    </div>
-                  </>
-                )}
+                <div>
+                  <label className="block text-xs uppercase tracking-[0.2em] text-neutral-500 mb-2">
+                    Email Address
+                  </label>
+                  <input
+                    type="email"
+                    value={emailInput}
+                    onChange={(e) => { setEmailInput(e.target.value); setErrorMsg(""); }}
+                    placeholder="Enter email address"
+                    className={`w-full border px-4 py-3 text-sm outline-none transition focus:border-blue-600 ${
+                      errorMsg ? "border-red-400 bg-red-50" : "border-neutral-200"
+                    }`}
+                    required
+                    autoFocus
+                  />
+                </div>
+                <div>
+                  <label className="block text-xs uppercase tracking-[0.2em] text-neutral-500 mb-2">
+                    Password
+                  </label>
+                  <input
+                    type="password"
+                    value={passwordInput}
+                    onChange={(e) => { setPasswordInput(e.target.value); setErrorMsg(""); }}
+                    placeholder="Enter password"
+                    className={`w-full border px-4 py-3 text-sm outline-none transition focus:border-blue-600 ${
+                      errorMsg ? "border-red-400 bg-red-50" : "border-neutral-200"
+                    }`}
+                    required
+                  />
+                </div>
 
                 <button
                   type="submit"

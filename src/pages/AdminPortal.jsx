@@ -1,9 +1,10 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 
 export default function AdminPortal() {
   const navigate = useNavigate();
   const location = useLocation();
+  const [dropdownOpen, setDropdownOpen] = useState(false);
 
   useEffect(() => {
     if (sessionStorage.getItem("cls_auth") !== "admin") {
@@ -41,9 +42,10 @@ export default function AdminPortal() {
           </div>
           <div className="flex items-center gap-6">
             {/* Access Client Portals Dropdown */}
-            <div className="relative group">
+            <div className="relative">
               <button 
                 type="button" 
+                onClick={() => setDropdownOpen(!dropdownOpen)}
                 className="flex items-center gap-1.5 bg-white hover:bg-neutral-50 border border-neutral-200 px-3.5 py-1.5 rounded-full text-xs font-semibold text-neutral-750 transition"
               >
                 <span>Access Client Portals</span>
@@ -51,32 +53,40 @@ export default function AdminPortal() {
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
                 </svg>
               </button>
-              <div className="absolute right-0 mt-1 w-44 bg-white border border-neutral-200 rounded-lg shadow-lg py-1 opacity-0 pointer-events-none group-hover:opacity-100 group-hover:pointer-events-auto transition-all duration-200 z-50">
-                <button
-                  onClick={() => navigate("/eas-portal")}
-                  className="w-full text-left px-4 py-2 text-xs text-neutral-700 hover:bg-neutral-50 transition font-medium"
-                >
-                  EAS Client Portal
-                </button>
-                <button
-                  onClick={() => navigate("/vals-portal")}
-                  className="w-full text-left px-4 py-2 text-xs text-neutral-700 hover:bg-neutral-50 transition font-medium"
-                >
-                  VALS Client Portal
-                </button>
-                <button
-                  onClick={() => navigate("/lacw-portal")}
-                  className="w-full text-left px-4 py-2 text-xs text-neutral-700 hover:bg-neutral-50 transition font-medium"
-                >
-                  LACW Client Portal
-                </button>
-                <button
-                  onClick={() => navigate("/jbl-portal")}
-                  className="w-full text-left px-4 py-2 text-xs text-neutral-700 hover:bg-neutral-50 transition font-medium"
-                >
-                  JBL Client Portal
-                </button>
-              </div>
+              {dropdownOpen && (
+                <>
+                  <div 
+                    className="fixed inset-0 z-40 cursor-default" 
+                    onClick={() => setDropdownOpen(false)}
+                  />
+                  <div className="absolute right-0 mt-1 w-44 bg-white border border-neutral-200 rounded-lg shadow-lg py-1 z-50">
+                    <button
+                      onClick={() => { setDropdownOpen(false); navigate("/eas-portal"); }}
+                      className="w-full text-left px-4 py-2 text-xs text-neutral-700 hover:bg-neutral-50 transition font-medium"
+                    >
+                      EAS Client Portal
+                    </button>
+                    <button
+                      onClick={() => { setDropdownOpen(false); navigate("/vals-portal"); }}
+                      className="w-full text-left px-4 py-2 text-xs text-neutral-700 hover:bg-neutral-50 transition font-medium"
+                    >
+                      VALS Client Portal
+                    </button>
+                    <button
+                      onClick={() => { setDropdownOpen(false); navigate("/lacw-portal"); }}
+                      className="w-full text-left px-4 py-2 text-xs text-neutral-700 hover:bg-neutral-50 transition font-medium"
+                    >
+                      LACW Client Portal
+                    </button>
+                    <button
+                      onClick={() => { setDropdownOpen(false); navigate("/jbl-portal"); }}
+                      className="w-full text-left px-4 py-2 text-xs text-neutral-700 hover:bg-neutral-50 transition font-medium"
+                    >
+                      JBL Client Portal
+                    </button>
+                  </div>
+                </>
+              )}
             </div>
 
             <button
