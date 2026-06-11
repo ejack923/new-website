@@ -8,6 +8,16 @@ const LACW_CODES = ["lacw2025", "lacwlegal2025", "lacw", "lac"];
 const JBL_CODES = ["jblaw2025", "jbl", "jarrod"];
 const ADMIN_CODES = ["admin", "emma", "clsadmin", "clsadmin2026"];
 
+// Default built-in accounts for admin and firms
+const DEFAULT_ACCOUNTS = [
+  { email: "admin@completelawsupport.com.au", username: "admin", password: "clsadmin2026", portal: "admin" },
+  { email: "emma@completelawsupport.com.au", username: "emma", password: "emma", portal: "admin" },
+  { email: "eas@completelawsupport.com.au", username: "eas", password: "EASLegal2025", portal: "eas" },
+  { email: "vals@completelawsupport.com.au", username: "vals", password: "VALS2025", portal: "vals" },
+  { email: "lacw@completelawsupport.com.au", username: "lacw", password: "LACW2025", portal: "lacw" },
+  { email: "jbl@completelawsupport.com.au", username: "jbl", password: "JBLaw2025", portal: "jbl" }
+];
+
 export default function ClientLogin() {
   const navigate = useNavigate();
 
@@ -74,8 +84,23 @@ export default function ClientLogin() {
     setErrorMsg("");
     setSuccessMsg("");
 
-    // Check registered credentials in localStorage
     const normalizedEmail = emailInput.trim().toLowerCase();
+    const password = passwordInput.trim();
+
+    // 1. Check default built-in accounts (email or username match)
+    const matchedDefault = DEFAULT_ACCOUNTS.find(
+      (acc) => 
+        (normalizedEmail === acc.email || normalizedEmail === acc.username) && 
+        password === acc.password
+    );
+
+    if (matchedDefault) {
+      sessionStorage.setItem("cls_auth", matchedDefault.portal);
+      navigate(`/${matchedDefault.portal}-portal`);
+      return;
+    }
+
+    // 2. Check registered credentials in localStorage
     const users = getUsers();
     const matchedUser = users.find(
       (u) => u.email.toLowerCase() === normalizedEmail && u.password === passwordInput
