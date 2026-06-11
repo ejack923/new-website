@@ -1,14 +1,14 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 
-export default function VALSPortal() {
+export default function LACWPortal() {
   const navigate = useNavigate();
   const location = useLocation();
   const [isDragging, setIsDragging] = useState(false);
 
   useEffect(() => {
     const auth = sessionStorage.getItem("cls_auth");
-    if (auth !== "vals" && auth !== "admin") {
+    if (auth !== "lacw" && auth !== "admin") {
       navigate("/client-login");
     }
   }, [navigate]);
@@ -30,7 +30,7 @@ export default function VALSPortal() {
 
   const currentPath = location.pathname;
   const currentSearch = location.search;
-  const iframeSrc = `https://portal.completelawsupport.com${currentPath}${currentSearch}${currentSearch ? '&' : '?'}back=https://completelawsupport.com/vals-portal`;
+  const iframeSrc = `https://portal.completelawsupport.com${currentPath}${currentSearch}${currentSearch ? '&' : '?'}back=https://completelawsupport.com/lacw-portal`;
 
   return (
     <div 
@@ -72,11 +72,11 @@ export default function VALSPortal() {
         </div>
       </header>
 
-      {/* Embed VALS Portal Tools Dashboard */}
+      {/* Embed LACW Portal Tools Dashboard */}
       <div className="flex-1 w-full relative bg-white">
         <iframe
           src={iframeSrc}
-          title="VALS Portal"
+          title="LACW Portal"
           className="absolute inset-0 w-full h-full border-none"
           allow="print; clipboard-write"
         />

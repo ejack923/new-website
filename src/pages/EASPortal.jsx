@@ -1,25 +1,48 @@
-import { useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { useNavigate, useLocation } from "react-router-dom";
 
 export default function EASPortal() {
   const navigate = useNavigate();
+  const location = useLocation();
+  const [isDragging, setIsDragging] = useState(false);
 
   useEffect(() => {
-    if (sessionStorage.getItem("cls_auth") !== "eas") {
+    const auth = sessionStorage.getItem("cls_auth");
+    if (auth !== "eas" && auth !== "admin") {
       navigate("/client-login");
     }
   }, [navigate]);
+
+  useEffect(() => {
+    const handleMessage = (e) => {
+      if (e.data && e.data.type === "DRAG_ENTER") {
+        setIsDragging(true);
+      }
+    };
+    window.addEventListener("message", handleMessage);
+    return () => window.removeEventListener("message", handleMessage);
+  }, []);
 
   const handleLogout = () => {
     sessionStorage.removeItem("cls_auth");
     navigate("/");
   };
 
+  const currentPath = location.pathname;
+  const currentSearch = location.search;
+  const iframeSrc = `https://portal.completelawsupport.com${currentPath}${currentSearch}${currentSearch ? '&' : '?'}back=https://completelawsupport.com/eas-portal`;
+
   return (
-    <div className="min-h-screen bg-white font-sans flex flex-col">
+    <div 
+      className="h-screen bg-white font-sans flex flex-col overflow-hidden relative"
+      onDragOver={(e) => {
+        e.preventDefault();
+        setIsDragging(true);
+      }}
+    >
       {/* Header */}
-      <header className="border-b border-neutral-200 bg-white">
-        <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-5 lg:px-10">
+      <header className="border-b border-neutral-200 bg-white shrink-0">
+        <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4 lg:px-10">
           <div className="flex items-center gap-5">
             <div className="flex flex-col items-start justify-center leading-none">
               <div className="text-[12px] font-medium tracking-[0.3em] text-neutral-900">CLS</div>
@@ -30,47 +53,141 @@ export default function EASPortal() {
               Complete Law Support
             </div>
           </div>
-          <button
-            onClick={handleLogout}
-            className="text-sm text-neutral-500 hover:text-neutral-700 transition"
-          >
-            Sign out
-          </button>
+          <div className="flex items-center gap-4">
+            {sessionStorage.getItem("cls_auth") === "admin" && (
+              <button
+                onClick={() => navigate("/admin-portal")}
+                className="text-sm font-semibold text-blue-600 hover:text-blue-700 transition"
+              >
+                ← Back to Admin
+              </button>
+            )}
+            <button
+              onClick={handleLogout}
+              className="text-sm text-neutral-500 hover:text-neutral-700 transition"
+            >
+              Sign out
+            </button>
+          </div>
         </div>
       </header>
 
-      {/* Portal Content */}
-      <main className="mx-auto w-full max-w-4xl px-6 py-16 lg:px-10">
-        <p className="mb-2 text-xs uppercase tracking-[0.3em] text-neutral-500">EAS Legal Portal</p>
-        <div className="mb-6 h-[1.5px] w-12 bg-blue-600" />
-        <h1 className="text-3xl font-semibold text-neutral-900">Your Tools</h1>
-        <p className="mt-3 text-sm text-neutral-500 leading-6">
-          Access your workflow tools and resources below.
-        </p>
+      {/* Embed EAS Portal Tools Dashboard */}
+      <div className="flex-1 w-full relative bg-white">
+        <iframe
+          src={iframeSrc}
+          title="EAS Portal"
+          className="absolute inset-0 w-full h-full border-none"
+          allow="print; clipboard-write"
+        />
+      </div>
 
-        <div className="mt-10 grid grid-cols-1 gap-6 sm:grid-cols-2">
-          {/* EAS Certification Form Card */}
-          <a
-            href="https://www.completelawsupport.com/EASLegalCertification"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="group block border border-neutral-200 p-6 transition hover:border-blue-300 hover:shadow-md"
-          >
-            <div className="mb-4 flex h-10 w-10 items-center justify-center bg-blue-50 text-blue-600">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                <path d="M6 9V2h12v7"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/>
-              </svg>
-            </div>
-            <h2 className="text-base font-semibold text-neutral-900 group-hover:text-blue-600 transition">
-              EAS Legal Guideline Certification
-            </h2>
-            <p className="mt-2 text-sm text-neutral-500 leading-6">
-              Complete and export VLA guideline compliance certificates for EAS matters.
-            </p>
-            <p className="mt-4 text-xs font-medium text-blue-600">Open tool →</p>
-          </a>
+      {isDragging && (
+        <div 
+          className="absolute inset-0 bg-neutral-900/60 z-50 flex flex-col items-center justify-center text-white border-4 border-dashed border-blue-500 m-4 rounded-2xl transition-all"
+          onDragLeave={() => setIsDragging(false)}
+          onDrop={async (e) => {
+            e.preventDefault();
+            setIsDragging(false);
+
+            const items = Array.from(e.dataTransfer.items || []);
+            const filesList = Array.from(e.dataTransfer.files || []);
+
+            if (items.length === 0 && filesList.length === 0) return;
+
+            const scanFiles = async (entry, path = "") => {
+              if (entry.isFile) {
+                try {
+                  const file = await new Promise((resolve, reject) => {
+                    entry.file(resolve, reject);
+                  });
+                  return [{ file, path: path ? `${path}/${file.name}` : file.name }];
+                } catch (err) {
+                  return [];
+                }
+              } else if (entry.isDirectory) {
+                try {
+                  const dirReader = entry.createReader();
+                  const readAllEntries = async () => {
+                    let allEntries = [];
+                    const readBatch = () => {
+                      return new Promise((resolve) => {
+                        dirReader.readEntries((entries) => {
+                          resolve(entries || []);
+                        }, () => resolve([]));
+                      });
+                    };
+                    let batch = await readBatch();
+                    while (batch && batch.length > 0) {
+                      allEntries.push(...batch);
+                      batch = await readBatch();
+                    }
+                    return allEntries;
+                  };
+                  const entries = await readAllEntries();
+                  const files = [];
+                  for (const subEntry of entries) {
+                    const subFiles = await scanFiles(subEntry, path ? `${path}/${entry.name}` : entry.name);
+                    files.push(...subFiles);
+                  }
+                  return files;
+                } catch (err) {
+                  return [];
+                }
+              }
+              return [];
+            };
+
+            let scanned = [];
+            if (items.length > 0) {
+              const filePromises = items.map(async (item) => {
+                if (item.kind === "file") {
+                  try {
+                    const entry = item.webkitGetAsEntry();
+                    if (entry) return await scanFiles(entry);
+                  } catch (err) {
+                    console.error(err);
+                  }
+                }
+                return [];
+              });
+              const results = await Promise.all(filePromises);
+              scanned = results.flat();
+            }
+
+            if (scanned.length === 0 && filesList.length > 0) {
+              scanned = filesList.map(file => ({
+                file,
+                path: file.name
+              }));
+            }
+
+            if (scanned.length > 0) {
+              const iframe = document.querySelector("iframe");
+              if (iframe && iframe.contentWindow) {
+                iframe.contentWindow.postMessage({
+                  type: "DROP_FILES",
+                  files: scanned
+                }, "*");
+              }
+            }
+          }}
+          onDragOver={(e) => {
+            e.preventDefault();
+            try {
+              e.dataTransfer.dropEffect = 'copy';
+            } catch (err) {}
+          }}
+        >
+          <div className="text-center p-6 bg-neutral-900/80 rounded-xl max-w-sm pointer-events-none">
+            <svg className="mx-auto h-12 w-12 text-blue-400 mb-3 animate-bounce" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
+            </svg>
+            <p className="text-sm font-bold">Drop SharePoint Folders or Files Here</p>
+            <p className="text-xs text-neutral-400 mt-1">They will be automatically uploaded to the portal</p>
+          </div>
         </div>
-      </main>
+      )}
     </div>
   );
 }
