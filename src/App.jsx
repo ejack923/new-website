@@ -122,6 +122,8 @@ export default function App() {
       <Route path="/admin-inbox" element={<AdminPortal />} />
       <Route path="/admin-audit-manager" element={<AdminPortal />} />
       <Route path="/inbox" element={<AdminPortal />} />
+      <Route path="/admin-deadline-guard" element={<AdminPortal />} />
+      <Route path="/admin-audit-manager" element={<AdminPortal />} />
       
       {/* Redirect old public pages to the new ComingSoon landing page */}
       <Route path="/home" element={<Navigate to="/" replace />} />
