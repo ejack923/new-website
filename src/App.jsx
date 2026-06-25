@@ -112,6 +112,7 @@ export default function App() {
       <Route path="/rga-matter-workspace" element={<RGAPortal />} />
       <Route path="/rga-certification" element={<RGAPortal />} />
       <Route path="/rga-aidapplication" element={<RGAPortal />} />
+      <Route path="/rga-applyforaid" element={<RGAPortal />} />
       <Route path="/rga-medicalworksheet" element={<RGAPortal />} />
       <Route path="/rga-memoprecedent" element={<RGAPortal />} />
 
