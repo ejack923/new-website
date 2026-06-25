@@ -84,6 +84,12 @@ export default function AdminPortal() {
                     >
                       JBL Client Portal
                     </button>
+                    <button
+                      onClick={() => { setDropdownOpen(false); navigate("/rga-portal"); }}
+                      className="w-full text-left px-4 py-2 text-xs text-neutral-700 hover:bg-neutral-50 transition font-medium"
+                    >
+                      RGA Client Portal
+                    </button>
                   </div>
                 </>
               )}

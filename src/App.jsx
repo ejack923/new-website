@@ -9,15 +9,50 @@ import JBLPortal from "./pages/JBLPortal";
 import EASCertification from "./pages/EASCertification";
 import VALSCertification from "./pages/VALSCertification";
 import AdminPortal from "./pages/AdminPortal";
+import RGAPortal from "./pages/RGAPortal";
+
 
 export default function App() {
   useEffect(() => {
     const handleMessage = (event) => {
-      if (event.data && event.data.type === "PORTAL_NAVIGATE" && event.data.path) {
+      if (!event.data) return;
+
+      if (event.data.type === "PORTAL_NAVIGATE" && event.data.path) {
         try {
           window.history.pushState(null, "", event.data.path);
         } catch (e) {
           console.error("Failed to pushState in parent window:", e);
+        }
+      } else if (event.data.type === "LOCAL_STORAGE_READY") {
+        try {
+          const storageData = {};
+          for (let i = 0; i < localStorage.length; i++) {
+            const key = localStorage.key(i);
+            storageData[key] = localStorage.getItem(key);
+          }
+          if (event.source) {
+            event.source.postMessage({ type: "LOCAL_STORAGE_INIT", data: storageData }, "*");
+          }
+        } catch (e) {
+          console.error("Failed to compile localStorage init payload:", e);
+        }
+      } else if (event.data.type === "LOCAL_STORAGE_SET" && event.data.key) {
+        try {
+          localStorage.setItem(event.data.key, event.data.value);
+        } catch (e) {
+          console.error("Failed to set localStorage in parent window:", e);
+        }
+      } else if (event.data.type === "LOCAL_STORAGE_REMOVE" && event.data.key) {
+        try {
+          localStorage.removeItem(event.data.key);
+        } catch (e) {
+          console.error("Failed to remove localStorage in parent window:", e);
+        }
+      } else if (event.data.type === "LOCAL_STORAGE_CLEAR") {
+        try {
+          localStorage.clear();
+        } catch (e) {
+          console.error("Failed to clear localStorage in parent window:", e);
         }
       }
     };
@@ -72,10 +107,20 @@ export default function App() {
       <Route path="/jbl-conflictcheck" element={<JBLPortal />} />
       <Route path="/jbl-audit-manager" element={<JBLPortal />} />
 
+      {/* RGA Portal routes */}
+      <Route path="/rga-portal" element={<RGAPortal />} />
+      <Route path="/rga-matter-workspace" element={<RGAPortal />} />
+      <Route path="/rga-certification" element={<RGAPortal />} />
+      <Route path="/rga-aidapplication" element={<RGAPortal />} />
+      <Route path="/rga-medicalworksheet" element={<RGAPortal />} />
+      <Route path="/rga-memoprecedent" element={<RGAPortal />} />
+
+
       <Route path="/EASLegalCertification" element={<EASCertification />} />
       <Route path="/VALSCertification" element={<VALSCertification />} />
       <Route path="/admin-portal" element={<AdminPortal />} />
       <Route path="/admin-inbox" element={<AdminPortal />} />
+      <Route path="/admin-audit-manager" element={<AdminPortal />} />
       <Route path="/inbox" element={<AdminPortal />} />
       
       {/* Redirect old public pages to the new ComingSoon landing page */}
