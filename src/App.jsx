@@ -95,6 +95,7 @@ export default function App() {
       <Route path="/lacw-billing" element={<LACWPortal />} />
       <Route path="/lacw-appealcostcertificate" element={<LACWPortal />} />
       <Route path="/lacw-emails" element={<LACWPortal />} />
+      <Route path="/lacw-feeslipinvoicepayment" element={<LACWPortal />} />
 
       {/* JBL Portal routes */}
       <Route path="/jbl-portal" element={<JBLPortal />} />
@@ -127,6 +128,7 @@ export default function App() {
       <Route path="/admin-audit-manager" element={<AdminPortal />} />
       <Route path="/admin-appealcostcertificate" element={<AdminPortal />} />
       <Route path="/admin-lacw-appealcostcertificate" element={<AdminPortal />} />
+      <Route path="/admin-lacw-feeslipinvoicepayment" element={<AdminPortal />} />
       <Route path="/inbox" element={<AdminPortal />} />
       <Route path="/admin-deadline-guard" element={<AdminPortal />} />
       <Route path="/admin-audit-manager" element={<AdminPortal />} />
