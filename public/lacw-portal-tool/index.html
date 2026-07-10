@@ -8,14 +8,14 @@
       @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap');
 
       :root {
-        --bg: #f4efe6;
-        --panel: #fffdfa;
-        --ink: #1c1f24;
-        --muted: #64748b;
-        --line: #e2e8f0;
-        --accent: #204a60;
-        --accent-hover: #173647;
-        --accent-2: #89692f;
+        --bg: #faf5ff; /* Soft purple-white */
+        --panel: #ffffff; /* Pure white */
+        --ink: #1e1b4b; /* Dark purple/slate */
+        --muted: #6b7280;
+        --line: #e9d5ff; /* Soft purple border */
+        --accent: #5b21b6; /* Deep Purple (LACW theme) */
+        --accent-hover: #4c1d95;
+        --accent-2: #db2777; /* Fuchsia */
         
         --submitted-bg: #f0fdf4;
         --submitted-color: #15803d;
@@ -34,7 +34,7 @@
         --waiting-border: #bfdbfe;
 
         --unprocessed-bg: #f8fafc;
-        --unprocessed-color: #475569;
+        --unprocessed-color: #4b5563;
         --unprocessed-border: #cbd5e1;
       }
 
@@ -45,7 +45,7 @@
       body {
         margin: 0;
         font-family: 'Plus Jakarta Sans', 'Segoe UI', sans-serif;
-        background: linear-gradient(180deg, #efe7d9 0%, var(--bg) 25%, #f6f2ec 100%);
+        background: linear-gradient(180deg, #f3e8ff 0%, var(--bg) 35%, #faf5ff 100%);
         color: var(--ink);
         min-height: 100vh;
         line-height: 1.5;
@@ -92,9 +92,8 @@
         background: var(--panel);
         border: 1px solid var(--line);
         border-radius: 20px;
-        box-shadow: 0 12px 36px rgba(34, 45, 59, 0.06);
+        box-shadow: 0 12px 36px rgba(91, 33, 182, 0.05);
         padding: 24px;
-        transition: transform 0.2s, box-shadow 0.2s;
       }
 
       .section-title {
@@ -110,9 +109,9 @@
 
       /* Drag and Drop Zone */
       .upload-container {
-        border: 2px dashed #cbd5e1;
+        border: 2px dashed #d8b4fe;
         border-radius: 16px;
-        background: #fcfcfd;
+        background: #fafafa;
         padding: 32px 20px;
         text-align: center;
         cursor: pointer;
@@ -121,7 +120,7 @@
 
       .upload-container:hover, .upload-container.dragover {
         border-color: var(--accent);
-        background: #f7fafc;
+        background: #f5f3ff;
       }
 
       .upload-icon {
@@ -149,176 +148,169 @@
       }
 
       .upload-item {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        padding: 12px 16px;
-        border-radius: 12px;
-        background: #f8fafc;
+        background: #fff;
         border: 1px solid var(--line);
+        border-radius: 12px;
+        padding: 12px 16px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
         font-size: 13px;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.02);
       }
 
       .upload-item-name {
-        font-weight: 500;
-        color: #334155;
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        max-width: 300px;
+        font-weight: 600;
+        color: var(--ink);
       }
 
       .upload-item-status {
-        display: flex;
-        align-items: center;
-        gap: 6px;
-        font-weight: 600;
+        font-weight: 500;
       }
 
-      .status-badge {
-        display: inline-flex;
-        align-items: center;
-        padding: 4px 10px;
-        border-radius: 9999px;
-        font-size: 11px;
-        font-weight: 700;
-        text-transform: uppercase;
-        letter-spacing: 0.02em;
-        border-width: 1px;
-        border-style: solid;
-      }
-
-      .status-badge.submitted {
-        background-color: var(--submitted-bg);
-        color: var(--submitted-color);
-        border-color: var(--submitted-border);
-      }
-
-      .status-badge.not-submitted {
-        background-color: var(--not-submitted-bg);
-        color: var(--not-submitted-color);
-        border-color: var(--not-submitted-border);
-      }
-
-      .status-badge.pending {
-        background-color: var(--pending-bg);
-        color: var(--pending-color);
-        border-color: var(--pending-border);
-      }
-
-      .status-badge.waiting {
-        background-color: var(--waiting-bg);
-        color: var(--waiting-color);
-        border-color: var(--waiting-border);
-      }
-
-      .status-badge.unprocessed {
-        background-color: var(--unprocessed-bg);
-        color: var(--unprocessed-color);
-        border-color: var(--unprocessed-border);
-      }
-
-      /* Control Header */
+      /* Filters & Search */
       .controls {
         display: flex;
-        flex-wrap: wrap;
-        gap: 16px;
         justify-content: space-between;
         align-items: center;
+        gap: 16px;
         margin-bottom: 20px;
+        flex-wrap: wrap;
       }
 
       .filter-tabs {
         display: flex;
         gap: 6px;
-        overflow-x: auto;
-        padding-bottom: 4px;
+        flex-wrap: wrap;
       }
 
       .filter-tab {
-        background: #f1f5f9;
+        background: #fff;
         border: 1px solid var(--line);
-        color: #475569;
-        font-weight: 600;
-        font-size: 13px;
-        padding: 8px 16px;
         border-radius: 10px;
+        padding: 8px 14px;
+        font-size: 13px;
+        font-weight: 600;
+        color: #6b7280;
         cursor: pointer;
-        transition: all 0.15s ease;
-        white-space: nowrap;
+        transition: all 0.2s;
       }
 
       .filter-tab:hover {
-        background: #e2e8f0;
+        background: #faf5ff;
+        color: var(--accent);
       }
 
       .filter-tab.active {
         background: var(--accent);
         border-color: var(--accent);
-        color: white;
+        color: #fff;
+        box-shadow: 0 4px 12px rgba(91, 33, 182, 0.2);
       }
 
       .search-box {
         position: relative;
-        flex: 1;
-        max-width: 320px;
+        min-width: 240px;
       }
 
       .search-input {
         width: 100%;
-        font-family: inherit;
-        font-size: 13px;
-        padding: 10px 16px;
         border: 1px solid var(--line);
-        border-radius: 12px;
-        background: #f8fafc;
+        border-radius: 10px;
+        padding: 8px 12px;
+        font-size: 13px;
         outline: none;
-        transition: all 0.15s;
+        transition: border-color 0.2s;
       }
 
       .search-input:focus {
         border-color: var(--accent);
-        background: white;
-        box-shadow: 0 0 0 3px rgba(32, 74, 96, 0.1);
       }
 
-      /* Guide Table */
-      .table-wrapper {
-        overflow-x: auto;
+      /* Monthly Accordions */
+      .accordion-item {
         border: 1px solid var(--line);
         border-radius: 14px;
-        background: white;
+        margin-bottom: 12px;
+        overflow: hidden;
+        background: var(--panel);
+        box-shadow: 0 2px 8px rgba(0,0,0,0.01);
       }
 
-      table {
+      .accordion-header {
+        width: 100%;
+        padding: 16px 20px;
+        background: #faf5ff;
+        border: none;
+        text-align: left;
+        font-family: 'Outfit', sans-serif;
+        font-size: 15px;
+        font-weight: 600;
+        color: var(--accent);
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        cursor: pointer;
+        transition: background 0.2s;
+        outline: none;
+      }
+
+      .accordion-header:hover {
+        background: #f3e8ff;
+      }
+
+      .accordion-body {
+        border-top: 1px solid var(--line);
+        display: block;
+        overflow-x: auto;
+      }
+
+      .accordion-body.collapsed {
+        display: none;
+      }
+
+      .chevron {
+        font-size: 11px;
+        transition: transform 0.2s;
+        color: var(--accent-2);
+      }
+
+      .chevron.open {
+        transform: rotate(180deg);
+      }
+
+      /* Unified Table Styling */
+      .portal-table {
         width: 100%;
         border-collapse: collapse;
-        font-size: 13px;
         text-align: left;
+        font-size: 13px;
       }
 
-      th {
-        background: #f8fafc;
-        padding: 14px 16px;
+      .portal-table th {
+        background: #faf5ff;
+        color: var(--accent);
+        font-family: 'Outfit', sans-serif;
         font-weight: 600;
-        color: #475569;
-        border-bottom: 2px solid var(--line);
-      }
-
-      td {
-        padding: 14px 16px;
+        padding: 12px 18px;
         border-bottom: 1px solid var(--line);
-        vertical-align: top;
       }
 
-      tr:last-child td {
+      .portal-table td {
+        padding: 14px 18px;
+        border-bottom: 1px solid var(--line);
+        vertical-align: middle;
+      }
+
+      .portal-table tr:last-child td {
         border-bottom: none;
       }
 
       .client-name {
+        font-family: 'Outfit', sans-serif;
+        font-size: 15px;
         font-weight: 600;
-        color: #1e293b;
-        font-size: 14px;
+        color: var(--ink);
       }
 
       .date-received {
@@ -327,177 +319,100 @@
         margin-top: 2px;
       }
 
+      /* Inline Interactive Select */
+      .status-select {
+        display: inline-flex;
+        align-items: center;
+        padding: 6px 12px;
+        border-radius: 9999px;
+        font-size: 11px;
+        font-weight: 650;
+        border: 1px solid transparent;
+        cursor: pointer;
+        outline: none;
+        transition: all 0.2s;
+        font-family: 'Plus Jakarta Sans', sans-serif;
+      }
+
+      .status-select.submitted {
+        background-color: var(--submitted-bg);
+        color: var(--submitted-color);
+        border-color: var(--submitted-border);
+      }
+
+      .status-select.not-submitted {
+        background-color: var(--not-submitted-bg);
+        color: var(--not-submitted-color);
+        border-color: var(--not-submitted-border);
+      }
+
+      .status-select.pending {
+        background-color: var(--pending-bg);
+        color: var(--pending-color);
+        border-color: var(--pending-border);
+      }
+
+      .status-select.waiting {
+        background-color: var(--waiting-bg);
+        color: var(--waiting-color);
+        border-color: var(--waiting-border);
+      }
+
+      .status-select.unprocessed {
+        background-color: var(--unprocessed-bg);
+        color: var(--unprocessed-color);
+        border-color: var(--unprocessed-border);
+      }
+
+      /* Inline Interactive Notes Input */
+      .notes-input {
+        width: 100%;
+        border: 1px solid transparent;
+        background: transparent;
+        padding: 6px 10px;
+        border-radius: 8px;
+        font-size: 12px;
+        color: #4b5563;
+        transition: all 0.2s;
+      }
+
+      .notes-input:hover {
+        border-color: var(--line);
+        background: #fdfdfd;
+      }
+
+      .notes-input:focus {
+        border-color: var(--accent);
+        background: #fff;
+        outline: none;
+        box-shadow: 0 0 0 2px rgba(91, 33, 182, 0.1);
+      }
+
       .attachment-link {
         display: inline-flex;
         align-items: center;
         gap: 4px;
-        font-size: 11px;
-        color: var(--accent-2);
+        color: var(--accent);
         text-decoration: none;
-        font-weight: 600;
-        margin-top: 4px;
-        margin-right: 8px;
-        background: #fdfaf2;
+        font-weight: 500;
+        background: #f3e8ff;
         padding: 2px 8px;
         border-radius: 6px;
-        border: 1px solid #f5ebd5;
+        margin-top: 4px;
       }
 
       .attachment-link:hover {
+        background: #e9d5ff;
         text-decoration: underline;
       }
 
-      .actions-btn {
-        background: #f1f5f9;
-        border: 1px solid #cbd5e1;
-        color: #334155;
-        font-weight: 600;
-        padding: 6px 12px;
-        border-radius: 8px;
-        cursor: pointer;
-        font-size: 12px;
-        transition: all 0.15s;
-      }
-
-      .actions-btn:hover {
-        background: #e2e8f0;
-      }
-
-      /* Modal Style */
-      .modal-backdrop {
-        position: fixed;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        background: rgba(15, 23, 42, 0.4);
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        z-index: 1000;
-        opacity: 0;
-        pointer-events: none;
-        transition: opacity 0.2s ease;
-        padding: 20px;
-      }
-
-      .modal-backdrop.show {
-        opacity: 1;
-        pointer-events: auto;
-      }
-
-      .modal {
-        background: white;
-        border-radius: 20px;
-        box-shadow: 0 20px 60px rgba(15, 23, 42, 0.15);
-        max-width: 480px;
-        width: 100%;
-        padding: 24px;
-        transform: translateY(20px);
-        transition: transform 0.2s ease;
-      }
-
-      .modal-backdrop.show .modal {
-        transform: translateY(0);
-      }
-
-      .modal-header {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        margin-bottom: 20px;
-      }
-
-      .modal-title {
-        font-family: 'Outfit', sans-serif;
-        font-size: 18px;
-        font-weight: 600;
-        color: var(--accent);
-        margin: 0;
-      }
-
-      .modal-close {
-        background: transparent;
-        border: none;
-        font-size: 18px;
-        cursor: pointer;
-        color: var(--muted);
-      }
-
-      .modal-body {
-        display: grid;
-        gap: 16px;
-      }
-
-      .form-group {
-        display: grid;
-        gap: 8px;
-      }
-
-      .form-label {
-        font-weight: 600;
-        font-size: 13px;
-        color: #475569;
-      }
-
-      select, textarea {
-        font-family: inherit;
-        font-size: 13px;
-        padding: 10px;
-        border: 1px solid var(--line);
-        border-radius: 10px;
-        width: 100%;
-        outline: none;
-        background: #f8fafc;
-      }
-
-      select:focus, textarea:focus {
-        border-color: var(--accent);
-        background: white;
-      }
-
-      .modal-footer {
-        display: flex;
-        justify-content: flex-end;
-        gap: 12px;
-        margin-top: 24px;
-      }
-
-      .btn {
-        font-family: inherit;
-        font-weight: 600;
-        font-size: 13px;
-        padding: 10px 18px;
-        border-radius: 10px;
-        cursor: pointer;
-        border: none;
-        transition: all 0.15s;
-      }
-
-      .btn-cancel {
-        background: #f1f5f9;
-        color: #475569;
-        border: 1px solid var(--line);
-      }
-
-      .btn-cancel:hover {
-        background: #e2e8f0;
-      }
-
-      .btn-save {
-        background: var(--accent);
-        color: white;
-      }
-
-      .btn-save:hover {
-        background: var(--accent-hover);
-      }
-
-      .empty {
-        padding: 40px;
+      .empty-state {
         text-align: center;
+        padding: 40px;
         color: var(--muted);
-        font-size: 13px;
+        font-style: italic;
+        border: 1px dashed var(--line);
+        border-radius: 16px;
       }
     </style>
   </head>
@@ -507,15 +422,34 @@
         <div class="eyebrow">LACW Portal Tool</div>
         <h1>📋 Legal Aid Status Monitor</h1>
       </div>
-      <div>
-        <a href="/operator/dashboard" style="font-size: 13px; font-weight: 600; color: var(--accent); text-decoration: none; display: flex; align-items: center; gap: 6px;">
-          ← Back to Operator Dashboard
-        </a>
-      </div>
     </header>
 
     <main>
-      <!-- Upload Section -->
+      <!-- Live Guide Section (Top) -->
+      <section class="panel">
+        <h2 class="section-title">⚡ Live Aid Status Guide</h2>
+        
+        <div class="controls">
+          <div class="filter-tabs">
+            <button class="filter-tab active" data-filter="all">All</button>
+            <button class="filter-tab" data-filter="unprocessed">New file request</button>
+            <button class="filter-tab" data-filter="aid_submitted">Aid Submitted</button>
+            <button class="filter-tab" data-filter="aid_not_submitted">Aid Not Submitted</button>
+            <button class="filter-tab" data-filter="pending_in_atlas">Pending in ATLAS</button>
+            <button class="filter-tab" data-filter="waiting_to_be_submitted_in_atlas">Waiting to be lodged</button>
+          </div>
+          
+          <div class="search-box">
+            <input type="text" id="searchInput" class="search-input" placeholder="Search client name..." />
+          </div>
+        </div>
+
+        <div id="accordionContainer">
+          <div class="empty-state">Loading LACW files list...</div>
+        </div>
+      </section>
+
+      <!-- Upload Section (Bottom) -->
       <section class="panel">
         <h2 class="section-title">📂 Upload VLA ATLAS Letters</h2>
         <div id="dropZone" class="upload-container">
@@ -526,82 +460,13 @@
         </div>
         <div id="uploadsList" class="uploads-list"></div>
       </section>
-
-      <!-- Live Guide Section -->
-      <section class="panel">
-        <h2 class="section-title">⚡ Live Aid Status Guide</h2>
-        
-        <div class="controls">
-          <div class="filter-tabs">
-            <button class="filter-tab active" data-filter="all">All</button>
-            <button class="filter-tab" data-filter="unprocessed">New / Unprocessed</button>
-            <button class="filter-tab" data-filter="aid_submitted">Aid Submitted</button>
-            <button class="filter-tab" data-filter="aid_not_submitted">Aid Not Submitted</button>
-            <button class="filter-tab" data-filter="pending_in_atlas">Pending in ATLAS</button>
-            <button class="filter-tab" data-filter="waiting_to_be_submitted_in_atlas">Waiting in ATLAS</button>
-          </div>
-          
-          <div class="search-box">
-            <input type="text" id="searchInput" class="search-input" placeholder="Search client name..." />
-          </div>
-        </div>
-
-        <div class="table-wrapper">
-          <table id="portalTable">
-            <thead>
-              <tr>
-                <th>Client / File Date</th>
-                <th>Subject & Snippet</th>
-                <th>Status</th>
-                <th>Notes / Attachments</th>
-                <th style="text-align: right;">Action</th>
-              </tr>
-            </thead>
-            <tbody id="portalTableBody">
-              <tr>
-                <td colspan="5" class="empty">Loading LACW files list...</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      </section>
     </main>
-
-    <!-- Update Status Modal -->
-    <div id="statusModalBackdrop" class="modal-backdrop">
-      <div class="modal">
-        <div class="modal-header">
-          <h3 class="modal-title">Update Client Aid Status</h3>
-          <button type="button" class="modal-close" onclick="closeModal()">✕</button>
-        </div>
-        <div class="modal-body">
-          <div class="form-group">
-            <label class="form-label" for="modalStatus">Aid Status</label>
-            <select id="modalStatus">
-              <option value="">New / Unprocessed</option>
-              <option value="aid_submitted">Aid Submitted</option>
-              <option value="aid_not_submitted">Aid Not Submitted</option>
-              <option value="pending_in_atlas">Pending in ATLAS</option>
-              <option value="waiting_to_be_submitted_in_atlas">Waiting to be submitted in ATLAS</option>
-            </select>
-          </div>
-          <div class="form-group">
-            <label class="form-label" for="modalNotes">Comments & Notes</label>
-            <textarea id="modalNotes" rows="3" placeholder="Enter comments or note details..."></textarea>
-          </div>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-cancel" onclick="closeModal()">Cancel</button>
-          <button type="button" class="btn btn-save" id="modalSaveBtn">Save Changes</button>
-        </div>
-      </div>
-    </div>
 
     <script>
       let emailsData = [];
       let currentFilter = 'all';
       let currentSearch = '';
-      let editingMessageId = null;
+      let openMonths = {}; // Keeps track of open/closed accordion states
 
       // Extract client name from subject line
       function getClientNameFromSubject(subject) {
@@ -626,9 +491,9 @@
           case 'pending':
             return { label: 'Pending in ATLAS', css: 'pending' };
           case 'waiting_to_be_submitted_in_atlas':
-            return { label: 'Waiting in ATLAS', css: 'waiting' };
+            return { label: 'Waiting to be lodged', css: 'waiting' };
           default:
-            return { label: 'Unprocessed', css: 'unprocessed' };
+            return { label: 'New file request', css: 'unprocessed' };
         }
       }
 
@@ -667,7 +532,6 @@
       function parseNotesMarkdown(notes = "") {
         if (!notes) return "";
         const escaped = escapeHtml(notes);
-        // Replace [Label](URL) with <a href="URL" class="attachment-link">Label</a>
         return escaped.replace(/\[([^\]]+)\]\(([^)]+)\)/g, (match, label, url) => {
           return `<a href="${url}" target="_blank" rel="noopener noreferrer" class="attachment-link">📎 ${label}</a>`;
         });
@@ -683,17 +547,15 @@
           .replace(/'/g, "&#039;");
       }
 
-      // Render the Guide Table
+      // Render the Guide Table with Monthly Accordions
       function renderTable() {
-        const tbody = document.getElementById("portalTableBody");
-        if (!tbody) return;
+        const container = document.getElementById("accordionContainer");
+        if (!container) return;
 
         // Apply filters
         const filtered = emailsData.filter(email => {
-          // Status match
           let statusMatch = true;
           if (currentFilter !== 'all') {
-            const mappedStatus = getStatusLabelAndClass(email.status).css;
             if (currentFilter === 'unprocessed') {
               statusMatch = !email.status;
             } else if (currentFilter === 'aid_submitted') {
@@ -707,7 +569,6 @@
             }
           }
 
-          // Search match
           let searchMatch = true;
           if (currentSearch) {
             const clientName = getClientNameFromSubject(email.subject).toLowerCase();
@@ -720,95 +581,157 @@
         });
 
         if (!filtered.length) {
-          tbody.innerHTML = `<tr><td colspan="5" class="empty">No matching legal aid files found.</td></tr>`;
+          container.innerHTML = `<div class="empty-state">No matching legal aid files found.</div>`;
           return;
         }
 
-        tbody.innerHTML = filtered.map(email => {
-          const clientName = getClientNameFromSubject(email.subject);
-          const dateStr = formatDate(email.date);
-          const statusInfo = getStatusLabelAndClass(email.status);
-          const notesHtml = parseNotesMarkdown(email.notes);
+        // Group by Month (newest to oldest)
+        const groups = {};
+        filtered.forEach(email => {
+          const dateObj = new Date(email.date || email.created_at);
+          let groupKey = "Unknown Date";
+          let sortVal = 0;
+          
+          if (dateObj && !isNaN(dateObj.getTime())) {
+            const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+            groupKey = `${monthNames[dateObj.getMonth()]} ${dateObj.getFullYear()}`;
+            sortVal = dateObj.getFullYear() * 12 + dateObj.getMonth();
+          }
+          
+          if (!groups[groupKey]) {
+            groups[groupKey] = {
+              label: groupKey,
+              sortVal: sortVal,
+              emails: []
+            };
+          }
+          groups[groupKey].emails.push(email);
+        });
+
+        // Sort groups from newest to oldest
+        const sortedGroups = Object.values(groups).sort((a, b) => b.sortVal - a.sortVal);
+
+        // Render accordion HTML
+        container.innerHTML = sortedGroups.map((group, groupIdx) => {
+          const isOpen = openMonths[group.label] !== undefined ? openMonths[group.label] : (groupIdx === 0);
+          
+          const rowsHtml = group.emails.map(email => {
+            const clientName = getClientNameFromSubject(email.subject);
+            const dateStr = formatDate(email.date || email.created_at);
+            const statusInfo = getStatusLabelAndClass(email.status);
+            const notesHtml = parseNotesMarkdown(email.notes);
+
+            return `
+              <tr>
+                <td>
+                  <div class="client-name">${escapeHtml(clientName)}</div>
+                  <div class="date-received">Received: ${escapeHtml(dateStr)}</div>
+                </td>
+                <td>
+                  <div style="font-weight: 500; color: var(--ink); font-size: 13px;">${escapeHtml(email.subject)}</div>
+                  <div style="color: var(--muted); font-size: 11px; margin-top: 3px; max-width: 480px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">${escapeHtml(email.snippet)}</div>
+                </td>
+                <td>
+                  <select class="status-select ${statusInfo.css}" onchange="autoSaveStatus('${escapeHtml(email.message_id)}', this.value)">
+                    <option value="" ${!email.status ? 'selected' : ''}>New file request</option>
+                    <option value="aid_submitted" ${(email.status === 'aid_submitted' || email.status === 'completed') ? 'selected' : ''}>Aid Submitted</option>
+                    <option value="aid_not_submitted" ${(email.status === 'aid_not_submitted' || email.status === 'not_completed') ? 'selected' : ''}>Aid Not Submitted</option>
+                    <option value="pending_in_atlas" ${(email.status === 'pending_in_atlas' || email.status === 'pending') ? 'selected' : ''}>Pending in ATLAS</option>
+                    <option value="waiting_to_be_submitted_in_atlas" ${email.status === 'waiting_to_be_submitted_in_atlas' ? 'selected' : ''}>Waiting to be lodged</option>
+                  </select>
+                </td>
+                <td style="max-width: 250px;">
+                  <input type="text" class="notes-input" value="${escapeHtml(email.notes || '')}" placeholder="Add comment/notes..." onblur="autoSaveNotes('${escapeHtml(email.message_id)}', this.value)" onkeydown="if(event.key==='Enter') { this.blur(); }" />
+                  ${notesHtml ? `<div style="margin-top: 4px;">${notesHtml}</div>` : ''}
+                </td>
+              </tr>
+            `;
+          }).join("");
 
           return `
-            <tr>
-              <td>
-                <div class="client-name">${escapeHtml(clientName)}</div>
-                <div class="date-received">Received: ${escapeHtml(dateStr)}</div>
-              </td>
-              <td>
-                <div style="font-weight: 500; color: #334155; font-size: 13px;">${escapeHtml(email.subject)}</div>
-                <div style="color: var(--muted); font-size: 11px; margin-top: 3px; max-width: 480px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">${escapeHtml(email.snippet)}</div>
-              </td>
-              <td>
-                <span class="status-badge ${statusInfo.css}">${escapeHtml(statusInfo.label)}</span>
-              </td>
-              <td style="max-width: 250px;">
-                <div style="font-size: 12px; color: #475569; word-break: break-word;">${notesHtml || '<span style="color: #cbd5e1; font-style:italic;">No notes yet</span>'}</div>
-              </td>
-              <td style="text-align: right;">
-                <button type="button" class="actions-btn" onclick="openUpdateModal('${escapeHtml(email.message_id)}')">✏️ Update</button>
-              </td>
-            </tr>
+            <div class="accordion-item">
+              <button type="button" class="accordion-header" onclick="toggleAccordion('${escapeHtml(group.label)}')">
+                <span>${escapeHtml(group.label)} (${group.emails.length})</span>
+                <span class="chevron ${isOpen ? 'open' : ''}">▼</span>
+              </button>
+              <div class="accordion-body ${isOpen ? '' : 'collapsed'}" id="body-${group.label}">
+                <table class="portal-table">
+                  <thead>
+                    <tr>
+                      <th>Client / File Date</th>
+                      <th>Subject & Snippet</th>
+                      <th>Status</th>
+                      <th>Notes / Attachments</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    ${rowsHtml}
+                  </tbody>
+                </table>
+              </div>
+            </div>
           `;
         }).join("");
       }
 
-      // Modal Actions
-      function openUpdateModal(messageId) {
-        const email = emailsData.find(e => e.message_id === messageId);
-        if (!email) return;
+      function toggleAccordion(label) {
+        const body = document.getElementById(`body-${label}`);
+        const header = body.previousElementSibling;
+        const chevron = header.querySelector(".chevron");
 
-        editingMessageId = messageId;
-        
-        let normalizedStatus = email.status || "";
-        if (normalizedStatus === 'completed') normalizedStatus = 'aid_submitted';
-        if (normalizedStatus === 'not_completed') normalizedStatus = 'aid_not_submitted';
-        if (normalizedStatus === 'pending') normalizedStatus = 'pending_in_atlas';
-
-        document.getElementById("modalStatus").value = normalizedStatus;
-        document.getElementById("modalNotes").value = email.notes || "";
-
-        const backdrop = document.getElementById("statusModalBackdrop");
-        backdrop.classList.add("show");
+        if (body.classList.contains("collapsed")) {
+          body.classList.remove("collapsed");
+          chevron.classList.add("open");
+          openMonths[label] = true;
+        } else {
+          body.classList.add("collapsed");
+          chevron.classList.remove("open");
+          openMonths[label] = false;
+        }
       }
 
-      function closeModal() {
-        editingMessageId = null;
-        const backdrop = document.getElementById("statusModalBackdrop");
-        backdrop.classList.remove("show");
-      }
-
-      async function saveModalChanges() {
-        if (!editingMessageId) return;
-
-        const newStatus = document.getElementById("modalStatus").value;
-        const newNotes = document.getElementById("modalNotes").value.trim();
-
-        const saveBtn = document.getElementById("modalSaveBtn");
-        const originalText = saveBtn.textContent;
-        saveBtn.disabled = true;
-        saveBtn.textContent = "Saving...";
-
+      // Inline Auto-saves
+      async function autoSaveStatus(messageId, newStatus) {
         try {
-          const response = await fetch(`/api/lacw-emails/${encodeURIComponent(editingMessageId)}`, {
+          const response = await fetch(`/api/lacw-emails/${encodeURIComponent(messageId)}`, {
             method: "PUT",
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ status: newStatus, notes: newNotes })
+            body: JSON.stringify({ status: newStatus })
           });
-          
           const payload = await response.json();
           if (payload.ok) {
-            closeModal();
-            await loadData();
+            // Update local memory and refresh display
+            const idx = emailsData.findIndex(e => e.message_id === messageId);
+            if (idx > -1) emailsData[idx].status = newStatus;
+            renderTable();
           } else {
-            alert("Error saving: " + payload.error);
+            console.error("Auto-save status failed:", payload.error);
           }
         } catch (err) {
-          alert("Error: " + err.message);
-        } finally {
-          saveBtn.disabled = false;
-          saveBtn.textContent = originalText;
+          console.error("Connection error:", err);
+        }
+      }
+
+      async function autoSaveNotes(messageId, newNotes) {
+        const email = emailsData.find(e => e.message_id === messageId);
+        if (email && email.notes === newNotes) return; // No changes
+
+        try {
+          const response = await fetch(`/api/lacw-emails/${encodeURIComponent(messageId)}`, {
+            method: "PUT",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ notes: newNotes })
+          });
+          const payload = await response.json();
+          if (payload.ok) {
+            const idx = emailsData.findIndex(e => e.message_id === messageId);
+            if (idx > -1) emailsData[idx].notes = newNotes;
+            renderTable();
+          } else {
+            console.error("Auto-save notes failed:", payload.error);
+          }
+        } catch (err) {
+          console.error("Connection error:", err);
         }
       }
 
@@ -847,16 +770,14 @@
       async function uploadFile(file) {
         const container = document.getElementById("uploadsList");
         
-        // Add item to uploads list UI
         const item = document.createElement("div");
         item.className = "upload-item";
         item.innerHTML = `
           <div class="upload-item-name">${escapeHtml(file.name)}</div>
           <div class="upload-item-status" style="color: var(--muted);">⏳ Processing...</div>
-        `;
+`;
         container.insertBefore(item, container.firstChild);
 
-        // Read file as Base64 data URL
         const reader = new FileReader();
         reader.readAsDataURL(file);
         reader.onload = async () => {
@@ -878,16 +799,15 @@
                   <div class="upload-item-status" style="color: var(--submitted-color);">
                     ✓ Attached to <strong>${escapeHtml(payload.clientName)}</strong> (Aid Submitted)
                   </div>
-                `;
+`;
               } else {
                 item.innerHTML = `
                   <div class="upload-item-name">${escapeHtml(file.name)}</div>
                   <div class="upload-item-status" style="color: var(--pending-color);">
                     ⚠ Client not found, saved to files (<a href="${payload.fileUrl}" target="_blank" style="color:inherit;">link</a>)
                   </div>
-                `;
+`;
               }
-              // Refresh table to show changes
               await loadData();
             } else {
               item.innerHTML = `
@@ -895,7 +815,7 @@
                 <div class="upload-item-status" style="color: var(--not-submitted-color);">
                   ❌ Upload Failed: ${escapeHtml(payload.error || "Unknown Error")}
                 </div>
-              `;
+`;
             }
           } catch (err) {
             item.innerHTML = `
@@ -903,7 +823,7 @@
               <div class="upload-item-status" style="color: var(--not-submitted-color);">
                 ❌ Connection Error: ${escapeHtml(err.message || String(err))}
               </div>
-            `;
+`;
           }
         };
       }
@@ -928,9 +848,6 @@
           currentSearch = e.target.value.trim();
           renderTable();
         });
-
-        // Bind save changes btn in modal
-        document.getElementById("modalSaveBtn").addEventListener("click", saveModalChanges);
       });
     </script>
   </body>

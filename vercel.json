@@ -24,7 +24,11 @@
   "rewrites": [
     {
       "source": "/api/lacw-emails/:path*",
-      "destination": "https://portal.completelawsupport.com/api/lacw-emails/:path*"
+      "destination": "https://deadline-website.onrender.com/api/lacw-emails/:path*"
+    },
+    {
+      "source": "/api/app/uploads/:path*",
+      "destination": "https://deadline-website.onrender.com/api/app/uploads/:path*"
     },
     {
       "source": "/lacw-portal-tool",
