@@ -8,14 +8,14 @@
       @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap');
 
       :root {
-        --bg: #f4efe6;
-        --panel: #fffdfa;
-        --ink: #1c1f24;
-        --muted: #64748b;
-        --line: #e2e8f0;
-        --accent: #204a60;
-        --accent-hover: #173647;
-        --accent-2: #89692f;
+        --bg: #faf5ff; /* Soft purple-white */
+        --panel: #ffffff; /* Pure white */
+        --ink: #1e1b4b; /* Dark purple/slate */
+        --muted: #6b7280;
+        --line: #e9d5ff; /* Soft purple border */
+        --accent: #5b21b6; /* Deep Purple (LACW theme) */
+        --accent-hover: #4c1d95;
+        --accent-2: #db2777; /* Fuchsia */
         
         --submitted-bg: #f0fdf4;
         --submitted-color: #15803d;
@@ -34,7 +34,7 @@
         --waiting-border: #bfdbfe;
 
         --unprocessed-bg: #f8fafc;
-        --unprocessed-color: #475569;
+        --unprocessed-color: #4b5563;
         --unprocessed-border: #cbd5e1;
       }
 
@@ -45,7 +45,7 @@
       body {
         margin: 0;
         font-family: 'Plus Jakarta Sans', 'Segoe UI', sans-serif;
-        background: linear-gradient(180deg, #efe7d9 0%, var(--bg) 25%, #f6f2ec 100%);
+        background: linear-gradient(180deg, #f3e8ff 0%, var(--bg) 35%, #faf5ff 100%);
         color: var(--ink);
         min-height: 100vh;
         line-height: 1.5;
@@ -92,9 +92,8 @@
         background: var(--panel);
         border: 1px solid var(--line);
         border-radius: 20px;
-        box-shadow: 0 12px 36px rgba(34, 45, 59, 0.06);
+        box-shadow: 0 12px 36px rgba(91, 33, 182, 0.05);
         padding: 24px;
-        transition: transform 0.2s, box-shadow 0.2s;
       }
 
       .section-title {
@@ -110,9 +109,9 @@
 
       /* Drag and Drop Zone */
       .upload-container {
-        border: 2px dashed #cbd5e1;
+        border: 2px dashed #d8b4fe;
         border-radius: 16px;
-        background: #fcfcfd;
+        background: #fafafa;
         padding: 32px 20px;
         text-align: center;
         cursor: pointer;
@@ -121,7 +120,7 @@
 
       .upload-container:hover, .upload-container.dragover {
         border-color: var(--accent);
-        background: #f7fafc;
+        background: #f5f3ff;
       }
 
       .upload-icon {
@@ -149,43 +148,190 @@
       }
 
       .upload-item {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        padding: 12px 16px;
-        border-radius: 12px;
-        background: #f8fafc;
+        background: #fff;
         border: 1px solid var(--line);
+        border-radius: 12px;
+        padding: 12px 16px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
         font-size: 13px;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.02);
       }
 
       .upload-item-name {
-        font-weight: 500;
-        color: #334155;
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        max-width: 300px;
+        font-weight: 600;
+        color: var(--ink);
       }
 
       .upload-item-status {
-        display: flex;
-        align-items: center;
-        gap: 6px;
-        font-weight: 600;
+        font-weight: 500;
       }
 
+      /* Filters & Search */
+      .controls {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 16px;
+        margin-bottom: 20px;
+        flex-wrap: wrap;
+      }
+
+      .filter-tabs {
+        display: flex;
+        gap: 6px;
+        flex-wrap: wrap;
+      }
+
+      .filter-tab {
+        background: #fff;
+        border: 1px solid var(--line);
+        border-radius: 10px;
+        padding: 8px 14px;
+        font-size: 13px;
+        font-weight: 600;
+        color: #6b7280;
+        cursor: pointer;
+        transition: all 0.2s;
+      }
+
+      .filter-tab:hover {
+        background: #faf5ff;
+        color: var(--accent);
+      }
+
+      .filter-tab.active {
+        background: var(--accent);
+        border-color: var(--accent);
+        color: #fff;
+        box-shadow: 0 4px 12px rgba(91, 33, 182, 0.2);
+      }
+
+      .search-box {
+        position: relative;
+        min-width: 240px;
+      }
+
+      .search-input {
+        width: 100%;
+        border: 1px solid var(--line);
+        border-radius: 10px;
+        padding: 8px 12px;
+        font-size: 13px;
+        outline: none;
+        transition: border-color 0.2s;
+      }
+
+      .search-input:focus {
+        border-color: var(--accent);
+      }
+
+      /* Monthly Accordions */
+      .accordion-item {
+        border: 1px solid var(--line);
+        border-radius: 14px;
+        margin-bottom: 12px;
+        overflow: hidden;
+        background: var(--panel);
+        box-shadow: 0 2px 8px rgba(0,0,0,0.01);
+      }
+
+      .accordion-header {
+        width: 100%;
+        padding: 16px 20px;
+        background: #faf5ff;
+        border: none;
+        text-align: left;
+        font-family: 'Outfit', sans-serif;
+        font-size: 15px;
+        font-weight: 600;
+        color: var(--accent);
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        cursor: pointer;
+        transition: background 0.2s;
+        outline: none;
+      }
+
+      .accordion-header:hover {
+        background: #f3e8ff;
+      }
+
+      .accordion-body {
+        border-top: 1px solid var(--line);
+        display: block;
+        overflow-x: auto;
+      }
+
+      .accordion-body.collapsed {
+        display: none;
+      }
+
+      .chevron {
+        font-size: 11px;
+        transition: transform 0.2s;
+        color: var(--accent-2);
+      }
+
+      .chevron.open {
+        transform: rotate(180deg);
+      }
+
+      /* Unified Table Styling */
+      .portal-table {
+        width: 100%;
+        border-collapse: collapse;
+        text-align: left;
+        font-size: 13px;
+      }
+
+      .portal-table th {
+        background: #faf5ff;
+        color: var(--accent);
+        font-family: 'Outfit', sans-serif;
+        font-weight: 600;
+        padding: 12px 18px;
+        border-bottom: 1px solid var(--line);
+      }
+
+      .portal-table td {
+        padding: 16px 18px;
+        border-bottom: 1px solid var(--line);
+        vertical-align: middle;
+      }
+
+      .portal-table tr:last-child td {
+        border-bottom: none;
+      }
+
+      .portal-table tr:hover td {
+        background-color: #faf5ff/20;
+      }
+
+      .client-name {
+        font-family: 'Outfit', sans-serif;
+        font-size: 15px;
+        font-weight: 600;
+        color: var(--ink);
+      }
+
+      .date-received {
+        font-size: 11px;
+        color: var(--muted);
+        margin-top: 2px;
+      }
+
+      /* Badges */
       .status-badge {
         display: inline-flex;
         align-items: center;
         padding: 4px 10px;
         border-radius: 9999px;
         font-size: 11px;
-        font-weight: 700;
-        text-transform: uppercase;
-        letter-spacing: 0.02em;
-        border-width: 1px;
-        border-style: solid;
+        font-weight: 650;
+        border: 1px solid transparent;
       }
 
       .status-badge.submitted {
@@ -218,159 +364,48 @@
         border-color: var(--unprocessed-border);
       }
 
-      /* Control Header */
-      .controls {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 16px;
-        justify-content: space-between;
-        align-items: center;
-        margin-bottom: 20px;
-      }
-
-      .filter-tabs {
-        display: flex;
-        gap: 6px;
-        overflow-x: auto;
-        padding-bottom: 4px;
-      }
-
-      .filter-tab {
-        background: #f1f5f9;
-        border: 1px solid var(--line);
-        color: #475569;
-        font-weight: 600;
-        font-size: 13px;
-        padding: 8px 16px;
-        border-radius: 10px;
-        cursor: pointer;
-        transition: all 0.15s ease;
-        white-space: nowrap;
-      }
-
-      .filter-tab:hover {
-        background: #e2e8f0;
-      }
-
-      .filter-tab.active {
-        background: var(--accent);
-        border-color: var(--accent);
-        color: white;
-      }
-
-      .search-box {
-        position: relative;
-        flex: 1;
-        max-width: 320px;
-      }
-
-      .search-input {
-        width: 100%;
-        font-family: inherit;
-        font-size: 13px;
-        padding: 10px 16px;
-        border: 1px solid var(--line);
-        border-radius: 12px;
-        background: #f8fafc;
-        outline: none;
-        transition: all 0.15s;
-      }
-
-      .search-input:focus {
-        border-color: var(--accent);
-        background: white;
-        box-shadow: 0 0 0 3px rgba(32, 74, 96, 0.1);
-      }
-
-      /* Guide Table */
-      .table-wrapper {
-        overflow-x: auto;
-        border: 1px solid var(--line);
-        border-radius: 14px;
-        background: white;
-      }
-
-      table {
-        width: 100%;
-        border-collapse: collapse;
-        font-size: 13px;
-        text-align: left;
-      }
-
-      th {
-        background: #f8fafc;
-        padding: 14px 16px;
-        font-weight: 600;
-        color: #475569;
-        border-bottom: 2px solid var(--line);
-      }
-
-      td {
-        padding: 14px 16px;
-        border-bottom: 1px solid var(--line);
-        vertical-align: top;
-      }
-
-      tr:last-child td {
-        border-bottom: none;
-      }
-
-      .client-name {
-        font-weight: 600;
-        color: #1e293b;
-        font-size: 14px;
-      }
-
-      .date-received {
-        font-size: 11px;
-        color: var(--muted);
-        margin-top: 2px;
-      }
-
       .attachment-link {
         display: inline-flex;
         align-items: center;
         gap: 4px;
-        font-size: 11px;
-        color: var(--accent-2);
+        color: var(--accent);
         text-decoration: none;
-        font-weight: 600;
-        margin-top: 4px;
-        margin-right: 8px;
-        background: #fdfaf2;
+        font-weight: 500;
+        background: #f3e8ff;
         padding: 2px 8px;
         border-radius: 6px;
-        border: 1px solid #f5ebd5;
+        margin-top: 4px;
       }
 
       .attachment-link:hover {
+        background: #e9d5ff;
         text-decoration: underline;
       }
 
+      /* Actions button */
       .actions-btn {
-        background: #f1f5f9;
-        border: 1px solid #cbd5e1;
-        color: #334155;
-        font-weight: 600;
+        background: #fff;
+        border: 1px solid var(--line);
         padding: 6px 12px;
         border-radius: 8px;
-        cursor: pointer;
         font-size: 12px;
-        transition: all 0.15s;
+        font-weight: 600;
+        color: var(--accent);
+        cursor: pointer;
+        transition: all 0.2s;
       }
 
       .actions-btn:hover {
-        background: #e2e8f0;
+        background: var(--accent);
+        border-color: var(--accent);
+        color: #fff;
       }
 
-      /* Modal Style */
+      /* Modal */
       .modal-backdrop {
         position: fixed;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        background: rgba(15, 23, 42, 0.4);
+        inset: 0;
+        background: rgba(30, 27, 75, 0.4);
         display: flex;
         align-items: center;
         justify-content: center;
@@ -378,7 +413,6 @@
         opacity: 0;
         pointer-events: none;
         transition: opacity 0.2s ease;
-        padding: 20px;
       }
 
       .modal-backdrop.show {
@@ -387,37 +421,33 @@
       }
 
       .modal {
-        background: white;
+        background: #fff;
         border-radius: 20px;
-        box-shadow: 0 20px 60px rgba(15, 23, 42, 0.15);
-        max-width: 480px;
         width: 100%;
-        padding: 24px;
-        transform: translateY(20px);
-        transition: transform 0.2s ease;
-      }
-
-      .modal-backdrop.show .modal {
-        transform: translateY(0);
+        max-width: 460px;
+        box-shadow: 0 20px 25px -5px rgba(0,0,0,0.1), 0 10px 10px -5px rgba(0,0,0,0.04);
+        overflow: hidden;
       }
 
       .modal-header {
+        padding: 18px 24px;
+        border-b: 1px solid var(--line);
         display: flex;
         justify-content: space-between;
         align-items: center;
-        margin-bottom: 20px;
+        background: #faf5ff;
       }
 
       .modal-title {
         font-family: 'Outfit', sans-serif;
-        font-size: 18px;
+        font-size: 17px;
         font-weight: 600;
         color: var(--accent);
         margin: 0;
       }
 
       .modal-close {
-        background: transparent;
+        background: none;
         border: none;
         font-size: 18px;
         cursor: pointer;
@@ -425,79 +455,82 @@
       }
 
       .modal-body {
+        padding: 24px;
         display: grid;
         gap: 16px;
       }
 
       .form-group {
         display: grid;
-        gap: 8px;
+        gap: 6px;
       }
 
       .form-label {
-        font-weight: 600;
-        font-size: 13px;
-        color: #475569;
+        font-size: 12px;
+        font-weight: 700;
+        color: var(--ink);
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
       }
 
-      select, textarea {
-        font-family: inherit;
-        font-size: 13px;
-        padding: 10px;
+      #modalStatus, #modalNotes {
+        width: 100%;
         border: 1px solid var(--line);
         border-radius: 10px;
-        width: 100%;
+        padding: 8px 12px;
+        font-size: 13px;
         outline: none;
-        background: #f8fafc;
       }
 
-      select:focus, textarea:focus {
+      #modalStatus:focus, #modalNotes:focus {
         border-color: var(--accent);
-        background: white;
       }
 
       .modal-footer {
+        padding: 16px 24px;
+        border-top: 1px solid var(--line);
         display: flex;
         justify-content: flex-end;
-        gap: 12px;
-        margin-top: 24px;
+        gap: 10px;
+        background: #fdfcff;
       }
 
       .btn {
-        font-family: inherit;
-        font-weight: 600;
-        font-size: 13px;
-        padding: 10px 18px;
+        padding: 8px 16px;
         border-radius: 10px;
+        font-size: 13px;
+        font-weight: 600;
         cursor: pointer;
-        border: none;
-        transition: all 0.15s;
+        transition: all 0.2s;
       }
 
       .btn-cancel {
-        background: #f1f5f9;
-        color: #475569;
+        background: #fff;
         border: 1px solid var(--line);
+        color: #6b7280;
       }
 
       .btn-cancel:hover {
-        background: #e2e8f0;
+        background: #f3f4f6;
       }
 
       .btn-save {
         background: var(--accent);
-        color: white;
+        border: 1px solid var(--accent);
+        color: #fff;
       }
 
       .btn-save:hover {
         background: var(--accent-hover);
       }
 
-      .empty {
-        padding: 40px;
+      .empty-state {
         text-align: center;
+        padding: 40px;
         color: var(--muted);
-        font-size: 13px;
+        font-style: italic;
+        border: 1px dashed var(--line);
+        border-radius: 16px;
       }
     </style>
   </head>
@@ -506,11 +539,6 @@
       <div>
         <div class="eyebrow">LACW Portal Tool</div>
         <h1>📋 Legal Aid Status Monitor</h1>
-      </div>
-      <div>
-        <a href="/operator/dashboard" style="font-size: 13px; font-weight: 600; color: var(--accent); text-decoration: none; display: flex; align-items: center; gap: 6px;">
-          ← Back to Operator Dashboard
-        </a>
       </div>
     </header>
 
@@ -534,11 +562,11 @@
         <div class="controls">
           <div class="filter-tabs">
             <button class="filter-tab active" data-filter="all">All</button>
-            <button class="filter-tab" data-filter="unprocessed">New / Unprocessed</button>
+            <button class="filter-tab" data-filter="unprocessed">New file request</button>
             <button class="filter-tab" data-filter="aid_submitted">Aid Submitted</button>
             <button class="filter-tab" data-filter="aid_not_submitted">Aid Not Submitted</button>
             <button class="filter-tab" data-filter="pending_in_atlas">Pending in ATLAS</button>
-            <button class="filter-tab" data-filter="waiting_to_be_submitted_in_atlas">Waiting in ATLAS</button>
+            <button class="filter-tab" data-filter="waiting_to_be_submitted_in_atlas">Waiting to be lodged</button>
           </div>
           
           <div class="search-box">
@@ -546,23 +574,8 @@
           </div>
         </div>
 
-        <div class="table-wrapper">
-          <table id="portalTable">
-            <thead>
-              <tr>
-                <th>Client / File Date</th>
-                <th>Subject & Snippet</th>
-                <th>Status</th>
-                <th>Notes / Attachments</th>
-                <th style="text-align: right;">Action</th>
-              </tr>
-            </thead>
-            <tbody id="portalTableBody">
-              <tr>
-                <td colspan="5" class="empty">Loading LACW files list...</td>
-              </tr>
-            </tbody>
-          </table>
+        <div id="accordionContainer">
+          <div class="empty-state">Loading LACW files list...</div>
         </div>
       </section>
     </main>
@@ -578,11 +591,11 @@
           <div class="form-group">
             <label class="form-label" for="modalStatus">Aid Status</label>
             <select id="modalStatus">
-              <option value="">New / Unprocessed</option>
+              <option value="">New file request</option>
               <option value="aid_submitted">Aid Submitted</option>
               <option value="aid_not_submitted">Aid Not Submitted</option>
               <option value="pending_in_atlas">Pending in ATLAS</option>
-              <option value="waiting_to_be_submitted_in_atlas">Waiting to be submitted in ATLAS</option>
+              <option value="waiting_to_be_submitted_in_atlas">Waiting to be lodged</option>
             </select>
           </div>
           <div class="form-group">
@@ -602,6 +615,7 @@
       let currentFilter = 'all';
       let currentSearch = '';
       let editingMessageId = null;
+      let openMonths = {}; // Keeps track of open/closed accordion states
 
       // Extract client name from subject line
       function getClientNameFromSubject(subject) {
@@ -626,9 +640,9 @@
           case 'pending':
             return { label: 'Pending in ATLAS', css: 'pending' };
           case 'waiting_to_be_submitted_in_atlas':
-            return { label: 'Waiting in ATLAS', css: 'waiting' };
+            return { label: 'Waiting to be lodged', css: 'waiting' };
           default:
-            return { label: 'Unprocessed', css: 'unprocessed' };
+            return { label: 'New file request', css: 'unprocessed' };
         }
       }
 
@@ -667,7 +681,6 @@
       function parseNotesMarkdown(notes = "") {
         if (!notes) return "";
         const escaped = escapeHtml(notes);
-        // Replace [Label](URL) with <a href="URL" class="attachment-link">Label</a>
         return escaped.replace(/\[([^\]]+)\]\(([^)]+)\)/g, (match, label, url) => {
           return `<a href="${url}" target="_blank" rel="noopener noreferrer" class="attachment-link">📎 ${label}</a>`;
         });
@@ -683,17 +696,15 @@
           .replace(/'/g, "&#039;");
       }
 
-      // Render the Guide Table
+      // Render the Guide Table with Monthly Accordions
       function renderTable() {
-        const tbody = document.getElementById("portalTableBody");
-        if (!tbody) return;
+        const container = document.getElementById("accordionContainer");
+        if (!container) return;
 
         // Apply filters
         const filtered = emailsData.filter(email => {
-          // Status match
           let statusMatch = true;
           if (currentFilter !== 'all') {
-            const mappedStatus = getStatusLabelAndClass(email.status).css;
             if (currentFilter === 'unprocessed') {
               statusMatch = !email.status;
             } else if (currentFilter === 'aid_submitted') {
@@ -707,7 +718,6 @@
             }
           }
 
-          // Search match
           let searchMatch = true;
           if (currentSearch) {
             const clientName = getClientNameFromSubject(email.subject).toLowerCase();
@@ -720,38 +730,110 @@
         });
 
         if (!filtered.length) {
-          tbody.innerHTML = `<tr><td colspan="5" class="empty">No matching legal aid files found.</td></tr>`;
+          container.innerHTML = `<div class="empty-state">No matching legal aid files found.</div>`;
           return;
         }
 
-        tbody.innerHTML = filtered.map(email => {
-          const clientName = getClientNameFromSubject(email.subject);
-          const dateStr = formatDate(email.date);
-          const statusInfo = getStatusLabelAndClass(email.status);
-          const notesHtml = parseNotesMarkdown(email.notes);
+        // Group by Month (newest to oldest)
+        const groups = {};
+        filtered.forEach(email => {
+          const dateObj = new Date(email.date || email.created_at);
+          let groupKey = "Unknown Date";
+          let sortVal = 0;
+          
+          if (dateObj && !isNaN(dateObj.getTime())) {
+            const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+            groupKey = `${monthNames[dateObj.getMonth()]} ${dateObj.getFullYear()}`;
+            sortVal = dateObj.getFullYear() * 12 + dateObj.getMonth();
+          }
+          
+          if (!groups[groupKey]) {
+            groups[groupKey] = {
+              label: groupKey,
+              sortVal: sortVal,
+              emails: []
+            };
+          }
+          groups[groupKey].emails.push(email);
+        });
+
+        // Sort groups from newest to oldest
+        const sortedGroups = Object.values(groups).sort((a, b) => b.sortVal - a.sortVal);
+
+        // Render accordion HTML
+        container.innerHTML = sortedGroups.map((group, groupIdx) => {
+          const isOpen = openMonths[group.label] !== undefined ? openMonths[group.label] : (groupIdx === 0);
+          
+          const rowsHtml = group.emails.map(email => {
+            const clientName = getClientNameFromSubject(email.subject);
+            const dateStr = formatDate(email.date || email.created_at);
+            const statusInfo = getStatusLabelAndClass(email.status);
+            const notesHtml = parseNotesMarkdown(email.notes);
+
+            return `
+              <tr>
+                <td>
+                  <div class="client-name">${escapeHtml(clientName)}</div>
+                  <div class="date-received">Received: ${escapeHtml(dateStr)}</div>
+                </td>
+                <td>
+                  <div style="font-weight: 500; color: var(--ink); font-size: 13px;">${escapeHtml(email.subject)}</div>
+                  <div style="color: var(--muted); font-size: 11px; margin-top: 3px; max-width: 480px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">${escapeHtml(email.snippet)}</div>
+                </td>
+                <td>
+                  <span class="status-badge ${statusInfo.css}">${escapeHtml(statusInfo.label)}</span>
+                </td>
+                <td style="max-width: 250px;">
+                  <div style="font-size: 12px; color: #4b5563; word-break: break-word;">${notesHtml || '<span style="color: #cbd5e1; font-style:italic;">No notes yet</span>'}</div>
+                </td>
+                <td style="text-align: right;">
+                  <button type="button" class="actions-btn" onclick="openUpdateModal('${escapeHtml(email.message_id)}')">✏️ Update</button>
+                </td>
+              </tr>
+            `;
+          }).join("");
 
           return `
-            <tr>
-              <td>
-                <div class="client-name">${escapeHtml(clientName)}</div>
-                <div class="date-received">Received: ${escapeHtml(dateStr)}</div>
-              </td>
-              <td>
-                <div style="font-weight: 500; color: #334155; font-size: 13px;">${escapeHtml(email.subject)}</div>
-                <div style="color: var(--muted); font-size: 11px; margin-top: 3px; max-width: 480px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">${escapeHtml(email.snippet)}</div>
-              </td>
-              <td>
-                <span class="status-badge ${statusInfo.css}">${escapeHtml(statusInfo.label)}</span>
-              </td>
-              <td style="max-width: 250px;">
-                <div style="font-size: 12px; color: #475569; word-break: break-word;">${notesHtml || '<span style="color: #cbd5e1; font-style:italic;">No notes yet</span>'}</div>
-              </td>
-              <td style="text-align: right;">
-                <button type="button" class="actions-btn" onclick="openUpdateModal('${escapeHtml(email.message_id)}')">✏️ Update</button>
-              </td>
-            </tr>
+            <div class="accordion-item">
+              <button type="button" class="accordion-header" onclick="toggleAccordion('${escapeHtml(group.label)}')">
+                <span>${escapeHtml(group.label)} (${group.emails.length})</span>
+                <span class="chevron ${isOpen ? 'open' : ''}">▼</span>
+              </button>
+              <div class="accordion-body ${isOpen ? '' : 'collapsed'}" id="body-${group.label}">
+                <table class="portal-table">
+                  <thead>
+                    <tr>
+                      <th>Client / File Date</th>
+                      <th>Subject & Snippet</th>
+                      <th>Status</th>
+                      <th>Notes / Attachments</th>
+                      <th style="text-align: right;">Action</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    ${rowsHtml}
+                  </tbody>
+                </table>
+              </div>
+            </div>
           `;
         }).join("");
+      }
+
+      function toggleAccordion(label) {
+        const body = document.getElementById(`body-${label}`);
+        const header = body.previousElementSibling;
+        const chevron = header.querySelector(".chevron");
+
+        if (body.classList.contains("collapsed")) {
+          body.classList.remove("collapsed");
+          chevron.classList.add("open");
+          openMonths[label] = true;
+        } else {
+          body.classList.add("collapsed");
+          chevron.classList.remove("open");
+          openMonths[label] = false;
+        }
       }
 
       // Modal Actions
@@ -847,16 +929,14 @@
       async function uploadFile(file) {
         const container = document.getElementById("uploadsList");
         
-        // Add item to uploads list UI
         const item = document.createElement("div");
         item.className = "upload-item";
         item.innerHTML = `
           <div class="upload-item-name">${escapeHtml(file.name)}</div>
           <div class="upload-item-status" style="color: var(--muted);">⏳ Processing...</div>
-        `;
+`;
         container.insertBefore(item, container.firstChild);
 
-        // Read file as Base64 data URL
         const reader = new FileReader();
         reader.readAsDataURL(file);
         reader.onload = async () => {
@@ -878,16 +958,15 @@
                   <div class="upload-item-status" style="color: var(--submitted-color);">
                     ✓ Attached to <strong>${escapeHtml(payload.clientName)}</strong> (Aid Submitted)
                   </div>
-                `;
+`;
               } else {
                 item.innerHTML = `
                   <div class="upload-item-name">${escapeHtml(file.name)}</div>
                   <div class="upload-item-status" style="color: var(--pending-color);">
                     ⚠ Client not found, saved to files (<a href="${payload.fileUrl}" target="_blank" style="color:inherit;">link</a>)
                   </div>
-                `;
+`;
               }
-              // Refresh table to show changes
               await loadData();
             } else {
               item.innerHTML = `
@@ -895,7 +974,7 @@
                 <div class="upload-item-status" style="color: var(--not-submitted-color);">
                   ❌ Upload Failed: ${escapeHtml(payload.error || "Unknown Error")}
                 </div>
-              `;
+`;
             }
           } catch (err) {
             item.innerHTML = `
@@ -903,7 +982,7 @@
               <div class="upload-item-status" style="color: var(--not-submitted-color);">
                 ❌ Connection Error: ${escapeHtml(err.message || String(err))}
               </div>
-            `;
+`;
           }
         };
       }
