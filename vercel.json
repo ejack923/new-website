@@ -27,8 +27,8 @@
       "destination": "https://portal.completelawsupport.com/api/lacw-emails/:path*"
     },
     {
-      "source": "/lacw-portal",
-      "destination": "/lacw-portal/index.html"
+      "source": "/lacw-portal-tool",
+      "destination": "/lacw-portal-tool/index.html"
     },
     {
       "source": "/api/admin/operators",
@@ -47,7 +47,7 @@
       "destination": "/api/submissions.js"
     },
     {
-      "source": "/((?!api/|lacw-portal).*)",
+      "source": "/((?!api/|lacw-portal-tool).*)",
       "destination": "/index.html"
     }
   ]

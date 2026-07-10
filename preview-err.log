@@ -1,0 +1,18 @@
+[31mfailed to load config from C:\Users\Public\Emma Project\chrome_ex\apps\frontend\vite.config.js[39m
+[31merror when starting preview server:
+Error: spawn EPERM
+    at ChildProcess.spawn (node:internal/child_process:421:11)
+    at Object.spawn (node:child_process:796:9)
+    at ensureServiceIsRunning (C:\Users\Public\Emma Project\chrome_ex\apps\frontend\node_modules\esbuild\lib\main.js:1978:29)
+    at build (C:\Users\Public\Emma Project\chrome_ex\apps\frontend\node_modules\esbuild\lib\main.js:1876:26)
+    at bundleConfigFile (file:///C:/Users/Public/Emma%20Project/chrome_ex/apps/frontend/node_modules/vite/dist/node/chunks/dep-Bu492Fnd.js:49281:24)
+    at async bundleAndLoadConfigFile (file:///C:/Users/Public/Emma%20Project/chrome_ex/apps/frontend/node_modules/vite/dist/node/chunks/dep-Bu492Fnd.js:49265:19)
+    at async loadConfigFromFile (file:///C:/Users/Public/Emma%20Project/chrome_ex/apps/frontend/node_modules/vite/dist/node/chunks/dep-Bu492Fnd.js:49229:44)
+    at async resolveConfig (file:///C:/Users/Public/Emma%20Project/chrome_ex/apps/frontend/node_modules/vite/dist/node/chunks/dep-Bu492Fnd.js:48725:24)
+    at async preview (file:///C:/Users/Public/Emma%20Project/chrome_ex/apps/frontend/node_modules/vite/dist/node/chunks/dep-Bu492Fnd.js:48210:18)
+    at async CAC.<anonymous> (file:///C:/Users/Public/Emma%20Project/chrome_ex/apps/frontend/node_modules/vite/dist/node/cli.js:914:22)[39m
+npm notice
+npm notice New minor version of npm available! 11.11.0 -> 11.13.0
+npm notice Changelog: https://github.com/npm/cli/releases/tag/v11.13.0
+npm notice To update run: npm install -g npm@11.13.0
+npm notice
