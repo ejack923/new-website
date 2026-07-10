@@ -1,25 +1,15 @@
 {
-  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "redirects": [
+    { "source": "/home", "destination": "/", "permanent": true },
+    { "source": "/services", "destination": "/", "permanent": true },
+    { "source": "/workflow-tools", "destination": "/", "permanent": true },
+    { "source": "/workflow-tools-access", "destination": "/", "permanent": true }
+  ],
   "rewrites": [
-    {
-      "source": "/api/admin/operators",
-      "destination": "/api/admin/operators.js"
-    },
-    {
-      "source": "/api/submissions",
-      "destination": "/api/submissions.js"
-    },
-    {
-      "source": "/api/submissions/:id",
-      "destination": "/api/submissions.js"
-    },
-    {
-      "source": "/api/submissions/:id/comments",
-      "destination": "/api/submissions.js"
-    },
-    {
-      "source": "/((?!api/).*)",
-      "destination": "/index.html"
-    }
+    { "source": "/api/admin/operators", "destination": "/api/admin/operators.js" },
+    { "source": "/api/submissions/:id/comments", "destination": "/api/submissions.js" },
+    { "source": "/api/submissions/:id", "destination": "/api/submissions.js" },
+    { "source": "/api/submissions", "destination": "/api/submissions.js" },
+    { "source": "/((?!api/).*)", "destination": "/index.html" }
   ]
 }
