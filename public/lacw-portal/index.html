@@ -1,0 +1,937 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>LACW Legal Aid Portal</title>
+    <style>
+      @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap');
+
+      :root {
+        --bg: #f4efe6;
+        --panel: #fffdfa;
+        --ink: #1c1f24;
+        --muted: #64748b;
+        --line: #e2e8f0;
+        --accent: #204a60;
+        --accent-hover: #173647;
+        --accent-2: #89692f;
+        
+        --submitted-bg: #f0fdf4;
+        --submitted-color: #15803d;
+        --submitted-border: #bbf7d0;
+
+        --not-submitted-bg: #fef2f2;
+        --not-submitted-color: #b91c1c;
+        --not-submitted-border: #fecaca;
+
+        --pending-bg: #fffbeb;
+        --pending-color: #b45309;
+        --pending-border: #fef3c7;
+
+        --waiting-bg: #eff6ff;
+        --waiting-color: #1d4ed8;
+        --waiting-border: #bfdbfe;
+
+        --unprocessed-bg: #f8fafc;
+        --unprocessed-color: #475569;
+        --unprocessed-border: #cbd5e1;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        font-family: 'Plus Jakarta Sans', 'Segoe UI', sans-serif;
+        background: linear-gradient(180deg, #efe7d9 0%, var(--bg) 25%, #f6f2ec 100%);
+        color: var(--ink);
+        min-height: 100vh;
+        line-height: 1.5;
+      }
+
+      header {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 32px 20px 16px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+
+      h1 {
+        font-family: 'Outfit', sans-serif;
+        font-size: 28px;
+        font-weight: 700;
+        color: var(--accent);
+        margin: 0;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+
+      .eyebrow {
+        font-size: 11px;
+        font-weight: 700;
+        letter-spacing: 0.15em;
+        text-transform: uppercase;
+        color: var(--accent-2);
+        margin-bottom: 4px;
+      }
+
+      main {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0 20px 40px;
+        display: grid;
+        gap: 24px;
+      }
+
+      .panel {
+        background: var(--panel);
+        border: 1px solid var(--line);
+        border-radius: 20px;
+        box-shadow: 0 12px 36px rgba(34, 45, 59, 0.06);
+        padding: 24px;
+        transition: transform 0.2s, box-shadow 0.2s;
+      }
+
+      .section-title {
+        font-family: 'Outfit', sans-serif;
+        font-size: 20px;
+        font-weight: 600;
+        color: var(--accent);
+        margin: 0 0 16px 0;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+
+      /* Drag and Drop Zone */
+      .upload-container {
+        border: 2px dashed #cbd5e1;
+        border-radius: 16px;
+        background: #fcfcfd;
+        padding: 32px 20px;
+        text-align: center;
+        cursor: pointer;
+        transition: all 0.2s ease;
+      }
+
+      .upload-container:hover, .upload-container.dragover {
+        border-color: var(--accent);
+        background: #f7fafc;
+      }
+
+      .upload-icon {
+        font-size: 40px;
+        margin-bottom: 12px;
+        display: block;
+      }
+
+      .upload-title {
+        font-weight: 600;
+        color: #334155;
+        margin-bottom: 4px;
+      }
+
+      .upload-subtitle {
+        font-size: 12px;
+        color: var(--muted);
+      }
+
+      /* Active Uploads List */
+      .uploads-list {
+        margin-top: 16px;
+        display: grid;
+        gap: 10px;
+      }
+
+      .upload-item {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 12px 16px;
+        border-radius: 12px;
+        background: #f8fafc;
+        border: 1px solid var(--line);
+        font-size: 13px;
+      }
+
+      .upload-item-name {
+        font-weight: 500;
+        color: #334155;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        max-width: 300px;
+      }
+
+      .upload-item-status {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        font-weight: 600;
+      }
+
+      .status-badge {
+        display: inline-flex;
+        align-items: center;
+        padding: 4px 10px;
+        border-radius: 9999px;
+        font-size: 11px;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.02em;
+        border-width: 1px;
+        border-style: solid;
+      }
+
+      .status-badge.submitted {
+        background-color: var(--submitted-bg);
+        color: var(--submitted-color);
+        border-color: var(--submitted-border);
+      }
+
+      .status-badge.not-submitted {
+        background-color: var(--not-submitted-bg);
+        color: var(--not-submitted-color);
+        border-color: var(--not-submitted-border);
+      }
+
+      .status-badge.pending {
+        background-color: var(--pending-bg);
+        color: var(--pending-color);
+        border-color: var(--pending-border);
+      }
+
+      .status-badge.waiting {
+        background-color: var(--waiting-bg);
+        color: var(--waiting-color);
+        border-color: var(--waiting-border);
+      }
+
+      .status-badge.unprocessed {
+        background-color: var(--unprocessed-bg);
+        color: var(--unprocessed-color);
+        border-color: var(--unprocessed-border);
+      }
+
+      /* Control Header */
+      .controls {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 16px;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 20px;
+      }
+
+      .filter-tabs {
+        display: flex;
+        gap: 6px;
+        overflow-x: auto;
+        padding-bottom: 4px;
+      }
+
+      .filter-tab {
+        background: #f1f5f9;
+        border: 1px solid var(--line);
+        color: #475569;
+        font-weight: 600;
+        font-size: 13px;
+        padding: 8px 16px;
+        border-radius: 10px;
+        cursor: pointer;
+        transition: all 0.15s ease;
+        white-space: nowrap;
+      }
+
+      .filter-tab:hover {
+        background: #e2e8f0;
+      }
+
+      .filter-tab.active {
+        background: var(--accent);
+        border-color: var(--accent);
+        color: white;
+      }
+
+      .search-box {
+        position: relative;
+        flex: 1;
+        max-width: 320px;
+      }
+
+      .search-input {
+        width: 100%;
+        font-family: inherit;
+        font-size: 13px;
+        padding: 10px 16px;
+        border: 1px solid var(--line);
+        border-radius: 12px;
+        background: #f8fafc;
+        outline: none;
+        transition: all 0.15s;
+      }
+
+      .search-input:focus {
+        border-color: var(--accent);
+        background: white;
+        box-shadow: 0 0 0 3px rgba(32, 74, 96, 0.1);
+      }
+
+      /* Guide Table */
+      .table-wrapper {
+        overflow-x: auto;
+        border: 1px solid var(--line);
+        border-radius: 14px;
+        background: white;
+      }
+
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 13px;
+        text-align: left;
+      }
+
+      th {
+        background: #f8fafc;
+        padding: 14px 16px;
+        font-weight: 600;
+        color: #475569;
+        border-bottom: 2px solid var(--line);
+      }
+
+      td {
+        padding: 14px 16px;
+        border-bottom: 1px solid var(--line);
+        vertical-align: top;
+      }
+
+      tr:last-child td {
+        border-bottom: none;
+      }
+
+      .client-name {
+        font-weight: 600;
+        color: #1e293b;
+        font-size: 14px;
+      }
+
+      .date-received {
+        font-size: 11px;
+        color: var(--muted);
+        margin-top: 2px;
+      }
+
+      .attachment-link {
+        display: inline-flex;
+        align-items: center;
+        gap: 4px;
+        font-size: 11px;
+        color: var(--accent-2);
+        text-decoration: none;
+        font-weight: 600;
+        margin-top: 4px;
+        margin-right: 8px;
+        background: #fdfaf2;
+        padding: 2px 8px;
+        border-radius: 6px;
+        border: 1px solid #f5ebd5;
+      }
+
+      .attachment-link:hover {
+        text-decoration: underline;
+      }
+
+      .actions-btn {
+        background: #f1f5f9;
+        border: 1px solid #cbd5e1;
+        color: #334155;
+        font-weight: 600;
+        padding: 6px 12px;
+        border-radius: 8px;
+        cursor: pointer;
+        font-size: 12px;
+        transition: all 0.15s;
+      }
+
+      .actions-btn:hover {
+        background: #e2e8f0;
+      }
+
+      /* Modal Style */
+      .modal-backdrop {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(15, 23, 42, 0.4);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        z-index: 1000;
+        opacity: 0;
+        pointer-events: none;
+        transition: opacity 0.2s ease;
+        padding: 20px;
+      }
+
+      .modal-backdrop.show {
+        opacity: 1;
+        pointer-events: auto;
+      }
+
+      .modal {
+        background: white;
+        border-radius: 20px;
+        box-shadow: 0 20px 60px rgba(15, 23, 42, 0.15);
+        max-width: 480px;
+        width: 100%;
+        padding: 24px;
+        transform: translateY(20px);
+        transition: transform 0.2s ease;
+      }
+
+      .modal-backdrop.show .modal {
+        transform: translateY(0);
+      }
+
+      .modal-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 20px;
+      }
+
+      .modal-title {
+        font-family: 'Outfit', sans-serif;
+        font-size: 18px;
+        font-weight: 600;
+        color: var(--accent);
+        margin: 0;
+      }
+
+      .modal-close {
+        background: transparent;
+        border: none;
+        font-size: 18px;
+        cursor: pointer;
+        color: var(--muted);
+      }
+
+      .modal-body {
+        display: grid;
+        gap: 16px;
+      }
+
+      .form-group {
+        display: grid;
+        gap: 8px;
+      }
+
+      .form-label {
+        font-weight: 600;
+        font-size: 13px;
+        color: #475569;
+      }
+
+      select, textarea {
+        font-family: inherit;
+        font-size: 13px;
+        padding: 10px;
+        border: 1px solid var(--line);
+        border-radius: 10px;
+        width: 100%;
+        outline: none;
+        background: #f8fafc;
+      }
+
+      select:focus, textarea:focus {
+        border-color: var(--accent);
+        background: white;
+      }
+
+      .modal-footer {
+        display: flex;
+        justify-content: flex-end;
+        gap: 12px;
+        margin-top: 24px;
+      }
+
+      .btn {
+        font-family: inherit;
+        font-weight: 600;
+        font-size: 13px;
+        padding: 10px 18px;
+        border-radius: 10px;
+        cursor: pointer;
+        border: none;
+        transition: all 0.15s;
+      }
+
+      .btn-cancel {
+        background: #f1f5f9;
+        color: #475569;
+        border: 1px solid var(--line);
+      }
+
+      .btn-cancel:hover {
+        background: #e2e8f0;
+      }
+
+      .btn-save {
+        background: var(--accent);
+        color: white;
+      }
+
+      .btn-save:hover {
+        background: var(--accent-hover);
+      }
+
+      .empty {
+        padding: 40px;
+        text-align: center;
+        color: var(--muted);
+        font-size: 13px;
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <div>
+        <div class="eyebrow">LACW Portal Tool</div>
+        <h1>📋 Legal Aid Status Monitor</h1>
+      </div>
+      <div>
+        <a href="/operator/dashboard" style="font-size: 13px; font-weight: 600; color: var(--accent); text-decoration: none; display: flex; align-items: center; gap: 6px;">
+          ← Back to Operator Dashboard
+        </a>
+      </div>
+    </header>
+
+    <main>
+      <!-- Upload Section -->
+      <section class="panel">
+        <h2 class="section-title">📂 Upload VLA ATLAS Letters</h2>
+        <div id="dropZone" class="upload-container">
+          <span class="upload-icon">📤</span>
+          <div class="upload-title">Drag & drop ATLAS PDF files here</div>
+          <div class="upload-subtitle">Or click to browse files from your computer</div>
+          <input type="file" id="fileInput" accept="application/pdf" multiple style="display: none;" />
+        </div>
+        <div id="uploadsList" class="uploads-list"></div>
+      </section>
+
+      <!-- Live Guide Section -->
+      <section class="panel">
+        <h2 class="section-title">⚡ Live Aid Status Guide</h2>
+        
+        <div class="controls">
+          <div class="filter-tabs">
+            <button class="filter-tab active" data-filter="all">All</button>
+            <button class="filter-tab" data-filter="unprocessed">New / Unprocessed</button>
+            <button class="filter-tab" data-filter="aid_submitted">Aid Submitted</button>
+            <button class="filter-tab" data-filter="aid_not_submitted">Aid Not Submitted</button>
+            <button class="filter-tab" data-filter="pending_in_atlas">Pending in ATLAS</button>
+            <button class="filter-tab" data-filter="waiting_to_be_submitted_in_atlas">Waiting in ATLAS</button>
+          </div>
+          
+          <div class="search-box">
+            <input type="text" id="searchInput" class="search-input" placeholder="Search client name..." />
+          </div>
+        </div>
+
+        <div class="table-wrapper">
+          <table id="portalTable">
+            <thead>
+              <tr>
+                <th>Client / File Date</th>
+                <th>Subject & Snippet</th>
+                <th>Status</th>
+                <th>Notes / Attachments</th>
+                <th style="text-align: right;">Action</th>
+              </tr>
+            </thead>
+            <tbody id="portalTableBody">
+              <tr>
+                <td colspan="5" class="empty">Loading LACW files list...</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+    </main>
+
+    <!-- Update Status Modal -->
+    <div id="statusModalBackdrop" class="modal-backdrop">
+      <div class="modal">
+        <div class="modal-header">
+          <h3 class="modal-title">Update Client Aid Status</h3>
+          <button type="button" class="modal-close" onclick="closeModal()">✕</button>
+        </div>
+        <div class="modal-body">
+          <div class="form-group">
+            <label class="form-label" for="modalStatus">Aid Status</label>
+            <select id="modalStatus">
+              <option value="">New / Unprocessed</option>
+              <option value="aid_submitted">Aid Submitted</option>
+              <option value="aid_not_submitted">Aid Not Submitted</option>
+              <option value="pending_in_atlas">Pending in ATLAS</option>
+              <option value="waiting_to_be_submitted_in_atlas">Waiting to be submitted in ATLAS</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="modalNotes">Comments & Notes</label>
+            <textarea id="modalNotes" rows="3" placeholder="Enter comments or note details..."></textarea>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-cancel" onclick="closeModal()">Cancel</button>
+          <button type="button" class="btn btn-save" id="modalSaveBtn">Save Changes</button>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      let emailsData = [];
+      let currentFilter = 'all';
+      let currentSearch = '';
+      let editingMessageId = null;
+
+      // Extract client name from subject line
+      function getClientNameFromSubject(subject) {
+        if (!subject) return "Unknown Client";
+        let name = subject.replace(/^(?:fw|fwd|re|aw|wg)\s*:\s*/i, "");
+        name = name.replace(/^new\s*[-_]?\s*file\s*:\s*/i, "");
+        name = name.split(/\b(?:vs|v\.)\b/i)[0];
+        name = name.split(/\s+in\s+/i)[0];
+        name = name.replace(/\(.*\)/g, "");
+        return name.trim() || "Unknown Client";
+      }
+
+      function getStatusLabelAndClass(status) {
+        switch (status) {
+          case 'aid_submitted':
+          case 'completed':
+            return { label: 'Aid Submitted', css: 'submitted' };
+          case 'aid_not_submitted':
+          case 'not_completed':
+            return { label: 'Aid Not Submitted', css: 'not-submitted' };
+          case 'pending_in_atlas':
+          case 'pending':
+            return { label: 'Pending in ATLAS', css: 'pending' };
+          case 'waiting_to_be_submitted_in_atlas':
+            return { label: 'Waiting in ATLAS', css: 'waiting' };
+          default:
+            return { label: 'Unprocessed', css: 'unprocessed' };
+        }
+      }
+
+      function formatDate(isoString) {
+        if (!isoString) return "";
+        try {
+          const date = new Date(isoString);
+          if (isNaN(date.getTime())) return String(isoString);
+          return date.toLocaleDateString("en-AU", {
+            day: "numeric",
+            month: "short",
+            year: "numeric"
+          });
+        } catch {
+          return String(isoString);
+        }
+      }
+
+      // Load Data from Backend
+      async function loadData() {
+        try {
+          const response = await fetch('/api/lacw-emails?limit=500');
+          const payload = await response.json();
+          if (payload.ok) {
+            emailsData = payload.emails || [];
+            renderTable();
+          } else {
+            console.error("Failed to load emails:", payload.error);
+          }
+        } catch (err) {
+          console.error("Error fetching data:", err);
+        }
+      }
+
+      // Parse markdown links in notes
+      function parseNotesMarkdown(notes = "") {
+        if (!notes) return "";
+        const escaped = escapeHtml(notes);
+        // Replace [Label](URL) with <a href="URL" class="attachment-link">Label</a>
+        return escaped.replace(/\[([^\]]+)\]\(([^)]+)\)/g, (match, label, url) => {
+          return `<a href="${url}" target="_blank" rel="noopener noreferrer" class="attachment-link">📎 ${label}</a>`;
+        });
+      }
+
+      function escapeHtml(str) {
+        if (!str) return "";
+        return str
+          .replace(/&/g, "&amp;")
+          .replace(/</g, "&lt;")
+          .replace(/>/g, "&gt;")
+          .replace(/"/g, "&quot;")
+          .replace(/'/g, "&#039;");
+      }
+
+      // Render the Guide Table
+      function renderTable() {
+        const tbody = document.getElementById("portalTableBody");
+        if (!tbody) return;
+
+        // Apply filters
+        const filtered = emailsData.filter(email => {
+          // Status match
+          let statusMatch = true;
+          if (currentFilter !== 'all') {
+            const mappedStatus = getStatusLabelAndClass(email.status).css;
+            if (currentFilter === 'unprocessed') {
+              statusMatch = !email.status;
+            } else if (currentFilter === 'aid_submitted') {
+              statusMatch = (email.status === 'aid_submitted' || email.status === 'completed');
+            } else if (currentFilter === 'aid_not_submitted') {
+              statusMatch = (email.status === 'aid_not_submitted' || email.status === 'not_completed');
+            } else if (currentFilter === 'pending_in_atlas') {
+              statusMatch = (email.status === 'pending_in_atlas' || email.status === 'pending');
+            } else if (currentFilter === 'waiting_to_be_submitted_in_atlas') {
+              statusMatch = email.status === 'waiting_to_be_submitted_in_atlas';
+            }
+          }
+
+          // Search match
+          let searchMatch = true;
+          if (currentSearch) {
+            const clientName = getClientNameFromSubject(email.subject).toLowerCase();
+            const subject = (email.subject || "").toLowerCase();
+            const query = currentSearch.toLowerCase();
+            searchMatch = clientName.includes(query) || subject.includes(query);
+          }
+
+          return statusMatch && searchMatch;
+        });
+
+        if (!filtered.length) {
+          tbody.innerHTML = `<tr><td colspan="5" class="empty">No matching legal aid files found.</td></tr>`;
+          return;
+        }
+
+        tbody.innerHTML = filtered.map(email => {
+          const clientName = getClientNameFromSubject(email.subject);
+          const dateStr = formatDate(email.date);
+          const statusInfo = getStatusLabelAndClass(email.status);
+          const notesHtml = parseNotesMarkdown(email.notes);
+
+          return `
+            <tr>
+              <td>
+                <div class="client-name">${escapeHtml(clientName)}</div>
+                <div class="date-received">Received: ${escapeHtml(dateStr)}</div>
+              </td>
+              <td>
+                <div style="font-weight: 500; color: #334155; font-size: 13px;">${escapeHtml(email.subject)}</div>
+                <div style="color: var(--muted); font-size: 11px; margin-top: 3px; max-width: 480px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">${escapeHtml(email.snippet)}</div>
+              </td>
+              <td>
+                <span class="status-badge ${statusInfo.css}">${escapeHtml(statusInfo.label)}</span>
+              </td>
+              <td style="max-width: 250px;">
+                <div style="font-size: 12px; color: #475569; word-break: break-word;">${notesHtml || '<span style="color: #cbd5e1; font-style:italic;">No notes yet</span>'}</div>
+              </td>
+              <td style="text-align: right;">
+                <button type="button" class="actions-btn" onclick="openUpdateModal('${escapeHtml(email.message_id)}')">✏️ Update</button>
+              </td>
+            </tr>
+          `;
+        }).join("");
+      }
+
+      // Modal Actions
+      function openUpdateModal(messageId) {
+        const email = emailsData.find(e => e.message_id === messageId);
+        if (!email) return;
+
+        editingMessageId = messageId;
+        
+        let normalizedStatus = email.status || "";
+        if (normalizedStatus === 'completed') normalizedStatus = 'aid_submitted';
+        if (normalizedStatus === 'not_completed') normalizedStatus = 'aid_not_submitted';
+        if (normalizedStatus === 'pending') normalizedStatus = 'pending_in_atlas';
+
+        document.getElementById("modalStatus").value = normalizedStatus;
+        document.getElementById("modalNotes").value = email.notes || "";
+
+        const backdrop = document.getElementById("statusModalBackdrop");
+        backdrop.classList.add("show");
+      }
+
+      function closeModal() {
+        editingMessageId = null;
+        const backdrop = document.getElementById("statusModalBackdrop");
+        backdrop.classList.remove("show");
+      }
+
+      async function saveModalChanges() {
+        if (!editingMessageId) return;
+
+        const newStatus = document.getElementById("modalStatus").value;
+        const newNotes = document.getElementById("modalNotes").value.trim();
+
+        const saveBtn = document.getElementById("modalSaveBtn");
+        const originalText = saveBtn.textContent;
+        saveBtn.disabled = true;
+        saveBtn.textContent = "Saving...";
+
+        try {
+          const response = await fetch(`/api/lacw-emails/${encodeURIComponent(editingMessageId)}`, {
+            method: "PUT",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ status: newStatus, notes: newNotes })
+          });
+          
+          const payload = await response.json();
+          if (payload.ok) {
+            closeModal();
+            await loadData();
+          } else {
+            alert("Error saving: " + payload.error);
+          }
+        } catch (err) {
+          alert("Error: " + err.message);
+        } finally {
+          saveBtn.disabled = false;
+          saveBtn.textContent = originalText;
+        }
+      }
+
+      // Drag and Drop & Upload Files
+      function initUploads() {
+        const dropZone = document.getElementById("dropZone");
+        const fileInput = document.getElementById("fileInput");
+
+        dropZone.addEventListener("click", () => fileInput.click());
+
+        dropZone.addEventListener("dragover", (e) => {
+          e.preventDefault();
+          dropZone.classList.add("dragover");
+        });
+
+        dropZone.addEventListener("dragleave", () => {
+          dropZone.classList.remove("dragover");
+        });
+
+        dropZone.addEventListener("drop", (e) => {
+          e.preventDefault();
+          dropZone.classList.remove("dragover");
+          handleFiles(e.dataTransfer.files);
+        });
+
+        fileInput.addEventListener("change", (e) => {
+          handleFiles(e.target.files);
+        });
+      }
+
+      function handleFiles(files) {
+        if (!files.length) return;
+        Array.from(files).forEach(uploadFile);
+      }
+
+      async function uploadFile(file) {
+        const container = document.getElementById("uploadsList");
+        
+        // Add item to uploads list UI
+        const item = document.createElement("div");
+        item.className = "upload-item";
+        item.innerHTML = `
+          <div class="upload-item-name">${escapeHtml(file.name)}</div>
+          <div class="upload-item-status" style="color: var(--muted);">⏳ Processing...</div>
+        `;
+        container.insertBefore(item, container.firstChild);
+
+        // Read file as Base64 data URL
+        const reader = new FileReader();
+        reader.readAsDataURL(file);
+        reader.onload = async () => {
+          try {
+            const res = await fetch("/api/lacw-emails/upload-atlas-letter", {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({
+                name: file.name,
+                data: reader.result
+              })
+            });
+            
+            const payload = await res.json();
+            if (payload.ok) {
+              if (payload.matched) {
+                item.innerHTML = `
+                  <div class="upload-item-name">${escapeHtml(file.name)}</div>
+                  <div class="upload-item-status" style="color: var(--submitted-color);">
+                    ✓ Attached to <strong>${escapeHtml(payload.clientName)}</strong> (Aid Submitted)
+                  </div>
+                `;
+              } else {
+                item.innerHTML = `
+                  <div class="upload-item-name">${escapeHtml(file.name)}</div>
+                  <div class="upload-item-status" style="color: var(--pending-color);">
+                    ⚠ Client not found, saved to files (<a href="${payload.fileUrl}" target="_blank" style="color:inherit;">link</a>)
+                  </div>
+                `;
+              }
+              // Refresh table to show changes
+              await loadData();
+            } else {
+              item.innerHTML = `
+                <div class="upload-item-name">${escapeHtml(file.name)}</div>
+                <div class="upload-item-status" style="color: var(--not-submitted-color);">
+                  ❌ Upload Failed: ${escapeHtml(payload.error || "Unknown Error")}
+                </div>
+              `;
+            }
+          } catch (err) {
+            item.innerHTML = `
+              <div class="upload-item-name">${escapeHtml(file.name)}</div>
+              <div class="upload-item-status" style="color: var(--not-submitted-color);">
+                ❌ Connection Error: ${escapeHtml(err.message || String(err))}
+              </div>
+            `;
+          }
+        };
+      }
+
+      // Initialize
+      document.addEventListener("DOMContentLoaded", () => {
+        loadData();
+        initUploads();
+
+        // Bind filter tabs
+        document.querySelectorAll(".filter-tab").forEach(tab => {
+          tab.addEventListener("click", () => {
+            document.querySelectorAll(".filter-tab").forEach(t => t.classList.remove("active"));
+            tab.classList.add("active");
+            currentFilter = tab.getAttribute("data-filter");
+            renderTable();
+          });
+        });
+
+        // Bind search input
+        document.getElementById("searchInput").addEventListener("input", (e) => {
+          currentSearch = e.target.value.trim();
+          renderTable();
+        });
+
+        // Bind save changes btn in modal
+        document.getElementById("modalSaveBtn").addEventListener("click", saveModalChanges);
+      });
+    </script>
+  </body>
+</html>
