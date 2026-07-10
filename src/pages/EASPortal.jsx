@@ -78,7 +78,7 @@ export default function EASPortal() {
           src={iframeSrc}
           title="EAS Portal"
           className="absolute inset-0 w-full h-full border-none"
-          allow="print; clipboard-write"
+          allow="camera; print; download; clipboard-write"
         />
       </div>
 
