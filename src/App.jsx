@@ -93,6 +93,8 @@ export default function App() {
       <Route path="/lacw-memoprecedent" element={<LACWPortal />} />
       <Route path="/lacw-travelclaim" element={<LACWPortal />} />
       <Route path="/lacw-billing" element={<LACWPortal />} />
+      <Route path="/lacw-appealcostcertificate" element={<LACWPortal />} />
+      <Route path="/lacw-emails" element={<LACWPortal />} />
 
       {/* JBL Portal routes */}
       <Route path="/jbl-portal" element={<JBLPortal />} />

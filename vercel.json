@@ -1,11 +1,54 @@
 {
   "redirects": [
-    { "source": "/home", "destination": "/", "permanent": true },
-    { "source": "/services", "destination": "/", "permanent": true },
-    { "source": "/workflow-tools", "destination": "/", "permanent": true },
-    { "source": "/workflow-tools-access", "destination": "/", "permanent": true }
+    {
+      "source": "/home",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/services",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/workflow-tools",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/workflow-tools-access",
+      "destination": "/",
+      "permanent": true
+    }
   ],
   "rewrites": [
-    { "source": "/(.*)", "destination": "/index.html" }
+    {
+      "source": "/api/lacw-emails/:path*",
+      "destination": "https://portal.completelawsupport.com/api/lacw-emails/:path*"
+    },
+    {
+      "source": "/lacw-portal-tool",
+      "destination": "/lacw-portal-tool/index.html"
+    },
+    {
+      "source": "/api/admin/operators",
+      "destination": "/api/admin/operators.js"
+    },
+    {
+      "source": "/api/submissions/:id/comments",
+      "destination": "/api/submissions.js"
+    },
+    {
+      "source": "/api/submissions/:id",
+      "destination": "/api/submissions.js"
+    },
+    {
+      "source": "/api/submissions",
+      "destination": "/api/submissions.js"
+    },
+    {
+      "source": "/((?!api/|lacw-portal-tool).*)",
+      "destination": "/index.html"
+    }
   ]
 }
