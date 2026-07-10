@@ -81,6 +81,7 @@ export default function App() {
       <Route path="/vals-backsheet" element={<VALSPortal />} />
       <Route path="/vals-medicalworksheet" element={<VALSPortal />} />
       <Route path="/vals-memoprecedent" element={<VALSPortal />} />
+      <Route path="/vals-emails" element={<VALSPortal />} />
 
       {/* LACW Portal routes */}
       <Route path="/lacw-portal" element={<LACWPortal />} />
@@ -119,6 +120,7 @@ export default function App() {
       <Route path="/rga-appealcostcertificate" element={<RGAPortal />} />
       <Route path="/rga-medicalworksheet" element={<RGAPortal />} />
       <Route path="/rga-memoprecedent" element={<RGAPortal />} />
+      <Route path="/rga-emails" element={<RGAPortal />} />
 
 
       <Route path="/EASLegalCertification" element={<EASCertification />} />

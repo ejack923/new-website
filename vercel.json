@@ -35,6 +35,14 @@
       "destination": "/lacw-portal-tool/index.html"
     },
     {
+      "source": "/vals-portal-tool",
+      "destination": "/vals-portal-tool/index.html"
+    },
+    {
+      "source": "/rga-portal-tool",
+      "destination": "/rga-portal-tool/index.html"
+    },
+    {
       "source": "/api/admin/operators",
       "destination": "/api/admin/operators.js"
     },
@@ -51,7 +59,7 @@
       "destination": "/api/submissions.js"
     },
     {
-      "source": "/((?!api/|lacw-portal-tool).*)",
+      "source": "/((?!api/|lacw-portal-tool|vals-portal-tool|rga-portal-tool).*)",
       "destination": "/index.html"
     }
   ]
