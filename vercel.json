@@ -27,6 +27,10 @@
       "destination": "https://deadline-website.onrender.com/api/lacw-emails/:path*"
     },
     {
+      "source": "/api/app/uploads/:path*",
+      "destination": "https://deadline-website.onrender.com/api/app/uploads/:path*"
+    },
+    {
       "source": "/lacw-portal-tool",
       "destination": "/lacw-portal-tool/index.html"
     },

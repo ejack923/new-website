@@ -297,17 +297,13 @@
       }
 
       .portal-table td {
-        padding: 16px 18px;
+        padding: 14px 18px;
         border-bottom: 1px solid var(--line);
         vertical-align: middle;
       }
 
       .portal-table tr:last-child td {
         border-bottom: none;
-      }
-
-      .portal-table tr:hover td {
-        background-color: #faf5ff/20;
       }
 
       .client-name {
@@ -323,45 +319,73 @@
         margin-top: 2px;
       }
 
-      /* Badges */
-      .status-badge {
+      /* Inline Interactive Select */
+      .status-select {
         display: inline-flex;
         align-items: center;
-        padding: 4px 10px;
+        padding: 6px 12px;
         border-radius: 9999px;
         font-size: 11px;
         font-weight: 650;
         border: 1px solid transparent;
+        cursor: pointer;
+        outline: none;
+        transition: all 0.2s;
+        font-family: 'Plus Jakarta Sans', sans-serif;
       }
 
-      .status-badge.submitted {
+      .status-select.submitted {
         background-color: var(--submitted-bg);
         color: var(--submitted-color);
         border-color: var(--submitted-border);
       }
 
-      .status-badge.not-submitted {
+      .status-select.not-submitted {
         background-color: var(--not-submitted-bg);
         color: var(--not-submitted-color);
         border-color: var(--not-submitted-border);
       }
 
-      .status-badge.pending {
+      .status-select.pending {
         background-color: var(--pending-bg);
         color: var(--pending-color);
         border-color: var(--pending-border);
       }
 
-      .status-badge.waiting {
+      .status-select.waiting {
         background-color: var(--waiting-bg);
         color: var(--waiting-color);
         border-color: var(--waiting-border);
       }
 
-      .status-badge.unprocessed {
+      .status-select.unprocessed {
         background-color: var(--unprocessed-bg);
         color: var(--unprocessed-color);
         border-color: var(--unprocessed-border);
+      }
+
+      /* Inline Interactive Notes Input */
+      .notes-input {
+        width: 100%;
+        border: 1px solid transparent;
+        background: transparent;
+        padding: 6px 10px;
+        border-radius: 8px;
+        font-size: 12px;
+        color: #4b5563;
+        transition: all 0.2s;
+      }
+
+      .notes-input:hover {
+        border-color: var(--line);
+        background: #fdfdfd;
+      }
+
+      .notes-input:focus {
+        border-color: var(--accent);
+        background: #fff;
+        outline: none;
+        box-shadow: 0 0 0 2px rgba(91, 33, 182, 0.1);
       }
 
       .attachment-link {
@@ -380,148 +404,6 @@
       .attachment-link:hover {
         background: #e9d5ff;
         text-decoration: underline;
-      }
-
-      /* Actions button */
-      .actions-btn {
-        background: #fff;
-        border: 1px solid var(--line);
-        padding: 6px 12px;
-        border-radius: 8px;
-        font-size: 12px;
-        font-weight: 600;
-        color: var(--accent);
-        cursor: pointer;
-        transition: all 0.2s;
-      }
-
-      .actions-btn:hover {
-        background: var(--accent);
-        border-color: var(--accent);
-        color: #fff;
-      }
-
-      /* Modal */
-      .modal-backdrop {
-        position: fixed;
-        inset: 0;
-        background: rgba(30, 27, 75, 0.4);
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        z-index: 1000;
-        opacity: 0;
-        pointer-events: none;
-        transition: opacity 0.2s ease;
-      }
-
-      .modal-backdrop.show {
-        opacity: 1;
-        pointer-events: auto;
-      }
-
-      .modal {
-        background: #fff;
-        border-radius: 20px;
-        width: 100%;
-        max-width: 460px;
-        box-shadow: 0 20px 25px -5px rgba(0,0,0,0.1), 0 10px 10px -5px rgba(0,0,0,0.04);
-        overflow: hidden;
-      }
-
-      .modal-header {
-        padding: 18px 24px;
-        border-b: 1px solid var(--line);
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        background: #faf5ff;
-      }
-
-      .modal-title {
-        font-family: 'Outfit', sans-serif;
-        font-size: 17px;
-        font-weight: 600;
-        color: var(--accent);
-        margin: 0;
-      }
-
-      .modal-close {
-        background: none;
-        border: none;
-        font-size: 18px;
-        cursor: pointer;
-        color: var(--muted);
-      }
-
-      .modal-body {
-        padding: 24px;
-        display: grid;
-        gap: 16px;
-      }
-
-      .form-group {
-        display: grid;
-        gap: 6px;
-      }
-
-      .form-label {
-        font-size: 12px;
-        font-weight: 700;
-        color: var(--ink);
-        text-transform: uppercase;
-        letter-spacing: 0.05em;
-      }
-
-      #modalStatus, #modalNotes {
-        width: 100%;
-        border: 1px solid var(--line);
-        border-radius: 10px;
-        padding: 8px 12px;
-        font-size: 13px;
-        outline: none;
-      }
-
-      #modalStatus:focus, #modalNotes:focus {
-        border-color: var(--accent);
-      }
-
-      .modal-footer {
-        padding: 16px 24px;
-        border-top: 1px solid var(--line);
-        display: flex;
-        justify-content: flex-end;
-        gap: 10px;
-        background: #fdfcff;
-      }
-
-      .btn {
-        padding: 8px 16px;
-        border-radius: 10px;
-        font-size: 13px;
-        font-weight: 600;
-        cursor: pointer;
-        transition: all 0.2s;
-      }
-
-      .btn-cancel {
-        background: #fff;
-        border: 1px solid var(--line);
-        color: #6b7280;
-      }
-
-      .btn-cancel:hover {
-        background: #f3f4f6;
-      }
-
-      .btn-save {
-        background: var(--accent);
-        border: 1px solid var(--accent);
-        color: #fff;
-      }
-
-      .btn-save:hover {
-        background: var(--accent-hover);
       }
 
       .empty-state {
@@ -543,19 +425,7 @@
     </header>
 
     <main>
-      <!-- Upload Section -->
-      <section class="panel">
-        <h2 class="section-title">📂 Upload VLA ATLAS Letters</h2>
-        <div id="dropZone" class="upload-container">
-          <span class="upload-icon">📤</span>
-          <div class="upload-title">Drag & drop ATLAS PDF files here</div>
-          <div class="upload-subtitle">Or click to browse files from your computer</div>
-          <input type="file" id="fileInput" accept="application/pdf" multiple style="display: none;" />
-        </div>
-        <div id="uploadsList" class="uploads-list"></div>
-      </section>
-
-      <!-- Live Guide Section -->
+      <!-- Live Guide Section (Top) -->
       <section class="panel">
         <h2 class="section-title">⚡ Live Aid Status Guide</h2>
         
@@ -578,43 +448,24 @@
           <div class="empty-state">Loading LACW files list...</div>
         </div>
       </section>
-    </main>
 
-    <!-- Update Status Modal -->
-    <div id="statusModalBackdrop" class="modal-backdrop">
-      <div class="modal">
-        <div class="modal-header">
-          <h3 class="modal-title">Update Client Aid Status</h3>
-          <button type="button" class="modal-close" onclick="closeModal()">✕</button>
+      <!-- Upload Section (Bottom) -->
+      <section class="panel">
+        <h2 class="section-title">📂 Upload VLA ATLAS Letters</h2>
+        <div id="dropZone" class="upload-container">
+          <span class="upload-icon">📤</span>
+          <div class="upload-title">Drag & drop ATLAS PDF files here</div>
+          <div class="upload-subtitle">Or click to browse files from your computer</div>
+          <input type="file" id="fileInput" accept="application/pdf" multiple style="display: none;" />
         </div>
-        <div class="modal-body">
-          <div class="form-group">
-            <label class="form-label" for="modalStatus">Aid Status</label>
-            <select id="modalStatus">
-              <option value="">New file request</option>
-              <option value="aid_submitted">Aid Submitted</option>
-              <option value="aid_not_submitted">Aid Not Submitted</option>
-              <option value="pending_in_atlas">Pending in ATLAS</option>
-              <option value="waiting_to_be_submitted_in_atlas">Waiting to be lodged</option>
-            </select>
-          </div>
-          <div class="form-group">
-            <label class="form-label" for="modalNotes">Comments & Notes</label>
-            <textarea id="modalNotes" rows="3" placeholder="Enter comments or note details..."></textarea>
-          </div>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-cancel" onclick="closeModal()">Cancel</button>
-          <button type="button" class="btn btn-save" id="modalSaveBtn">Save Changes</button>
-        </div>
-      </div>
-    </div>
+        <div id="uploadsList" class="uploads-list"></div>
+      </section>
+    </main>
 
     <script>
       let emailsData = [];
       let currentFilter = 'all';
       let currentSearch = '';
-      let editingMessageId = null;
       let openMonths = {}; // Keeps track of open/closed accordion states
 
       // Extract client name from subject line
@@ -781,13 +632,17 @@
                   <div style="color: var(--muted); font-size: 11px; margin-top: 3px; max-width: 480px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">${escapeHtml(email.snippet)}</div>
                 </td>
                 <td>
-                  <span class="status-badge ${statusInfo.css}">${escapeHtml(statusInfo.label)}</span>
+                  <select class="status-select ${statusInfo.css}" onchange="autoSaveStatus('${escapeHtml(email.message_id)}', this.value)">
+                    <option value="" ${!email.status ? 'selected' : ''}>New file request</option>
+                    <option value="aid_submitted" ${(email.status === 'aid_submitted' || email.status === 'completed') ? 'selected' : ''}>Aid Submitted</option>
+                    <option value="aid_not_submitted" ${(email.status === 'aid_not_submitted' || email.status === 'not_completed') ? 'selected' : ''}>Aid Not Submitted</option>
+                    <option value="pending_in_atlas" ${(email.status === 'pending_in_atlas' || email.status === 'pending') ? 'selected' : ''}>Pending in ATLAS</option>
+                    <option value="waiting_to_be_submitted_in_atlas" ${email.status === 'waiting_to_be_submitted_in_atlas' ? 'selected' : ''}>Waiting to be lodged</option>
+                  </select>
                 </td>
                 <td style="max-width: 250px;">
-                  <div style="font-size: 12px; color: #4b5563; word-break: break-word;">${notesHtml || '<span style="color: #cbd5e1; font-style:italic;">No notes yet</span>'}</div>
-                </td>
-                <td style="text-align: right;">
-                  <button type="button" class="actions-btn" onclick="openUpdateModal('${escapeHtml(email.message_id)}')">✏️ Update</button>
+                  <input type="text" class="notes-input" value="${escapeHtml(email.notes || '')}" placeholder="Add comment/notes..." onblur="autoSaveNotes('${escapeHtml(email.message_id)}', this.value)" onkeydown="if(event.key==='Enter') { this.blur(); }" />
+                  ${notesHtml ? `<div style="margin-top: 4px;">${notesHtml}</div>` : ''}
                 </td>
               </tr>
             `;
@@ -807,7 +662,6 @@
                       <th>Subject & Snippet</th>
                       <th>Status</th>
                       <th>Notes / Attachments</th>
-                      <th style="text-align: right;">Action</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -836,61 +690,48 @@
         }
       }
 
-      // Modal Actions
-      function openUpdateModal(messageId) {
-        const email = emailsData.find(e => e.message_id === messageId);
-        if (!email) return;
-
-        editingMessageId = messageId;
-        
-        let normalizedStatus = email.status || "";
-        if (normalizedStatus === 'completed') normalizedStatus = 'aid_submitted';
-        if (normalizedStatus === 'not_completed') normalizedStatus = 'aid_not_submitted';
-        if (normalizedStatus === 'pending') normalizedStatus = 'pending_in_atlas';
-
-        document.getElementById("modalStatus").value = normalizedStatus;
-        document.getElementById("modalNotes").value = email.notes || "";
-
-        const backdrop = document.getElementById("statusModalBackdrop");
-        backdrop.classList.add("show");
-      }
-
-      function closeModal() {
-        editingMessageId = null;
-        const backdrop = document.getElementById("statusModalBackdrop");
-        backdrop.classList.remove("show");
-      }
-
-      async function saveModalChanges() {
-        if (!editingMessageId) return;
-
-        const newStatus = document.getElementById("modalStatus").value;
-        const newNotes = document.getElementById("modalNotes").value.trim();
-
-        const saveBtn = document.getElementById("modalSaveBtn");
-        const originalText = saveBtn.textContent;
-        saveBtn.disabled = true;
-        saveBtn.textContent = "Saving...";
-
+      // Inline Auto-saves
+      async function autoSaveStatus(messageId, newStatus) {
         try {
-          const response = await fetch(`/api/lacw-emails/${encodeURIComponent(editingMessageId)}`, {
+          const response = await fetch(`/api/lacw-emails/${encodeURIComponent(messageId)}`, {
             method: "PUT",
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ status: newStatus, notes: newNotes })
+            body: JSON.stringify({ status: newStatus })
           });
-          
           const payload = await response.json();
           if (payload.ok) {
-            closeModal();
-            await loadData();
+            // Update local memory and refresh display
+            const idx = emailsData.findIndex(e => e.message_id === messageId);
+            if (idx > -1) emailsData[idx].status = newStatus;
+            renderTable();
           } else {
-            alert("Error saving: " + payload.error);
+            console.error("Auto-save status failed:", payload.error);
           }
         } catch (err) {
-          alert("Error: " + err.message);
-        } finally {
-          saveBtn.disabled = false;
-          saveBtn.textContent = originalText;
+          console.error("Connection error:", err);
+        }
+      }
+
+      async function autoSaveNotes(messageId, newNotes) {
+        const email = emailsData.find(e => e.message_id === messageId);
+        if (email && email.notes === newNotes) return; // No changes
+
+        try {
+          const response = await fetch(`/api/lacw-emails/${encodeURIComponent(messageId)}`, {
+            method: "PUT",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ notes: newNotes })
+          });
+          const payload = await response.json();
+          if (payload.ok) {
+            const idx = emailsData.findIndex(e => e.message_id === messageId);
+            if (idx > -1) emailsData[idx].notes = newNotes;
+            renderTable();
+          } else {
+            console.error("Auto-save notes failed:", payload.error);
+          }
+        } catch (err) {
+          console.error("Connection error:", err);
         }
       }
 
@@ -1007,9 +848,6 @@
           currentSearch = e.target.value.trim();
           renderTable();
         });
-
-        // Bind save changes btn in modal
-        document.getElementById("modalSaveBtn").addEventListener("click", saveModalChanges);
       });
     </script>
   </body>
