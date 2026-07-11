@@ -10,6 +10,7 @@ import EASCertification from "./pages/EASCertification";
 import VALSCertification from "./pages/VALSCertification";
 import AdminPortal from "./pages/AdminPortal";
 import RGAPortal from "./pages/RGAPortal";
+import CounselPortal from "./pages/CounselPortal";
 
 
 export default function App() {
@@ -125,6 +126,13 @@ export default function App() {
       <Route path="/rga-emails" element={<RGAPortal />} />
       <Route path="/rga-feeslipinvoicepayment" element={<RGAPortal />} />
       <Route path="/rga-monthlytrustreceipts" element={<RGAPortal />} />
+
+      {/* Counsel Portal routes */}
+      <Route path="/counsel-portal" element={<CounselPortal />} />
+      <Route path="/counsel-matter-workspace" element={<CounselPortal />} />
+      <Route path="/counsel-backsheet" element={<CounselPortal />} />
+      <Route path="/counsel-travelclaim" element={<CounselPortal />} />
+      <Route path="/counsel-draftforms" element={<CounselPortal />} />
 
 
       <Route path="/EASLegalCertification" element={<EASCertification />} />

@@ -8,6 +8,7 @@ const LACW_CODES = ["lacw2025", "lacwlegal2025", "lacw", "lac"];
 const JBL_CODES = ["jblaw2025", "jbl", "jarrod"];
 const RGA_CODES = ["rga2026", "rga", "robyn", "greensill"];
 const ADMIN_CODES = ["admin", "emma", "clsadmin", "clsadmin2026"];
+const COUNSEL_CODES = ["counsel", "counsel2026", "barrister", "advocate"];
 
 // Default built-in accounts for admin and firms
 const DEFAULT_ACCOUNTS = [
@@ -17,7 +18,8 @@ const DEFAULT_ACCOUNTS = [
   { email: "vals@completelawsupport.com.au", username: "vals", password: "VALS2025", portal: "vals" },
   { email: "lacw@completelawsupport.com.au", username: "lacw", password: "LACW2025", portal: "lacw" },
   { email: "jbl@completelawsupport.com.au", username: "jbl", password: "JBLaw2025", portal: "jbl" },
-  { email: "rga@completelawsupport.com.au", username: "rga", password: "RGAPortal2026", portal: "rga" }
+  { email: "rga@completelawsupport.com.au", username: "rga", password: "RGAPortal2026", portal: "rga" },
+  { email: "counsel@completelawsupport.com.au", username: "counsel", password: "CounselPortal2026", portal: "counsel" }
 ];
 
 export default function ClientLogin() {
@@ -78,6 +80,7 @@ export default function ClientLogin() {
     if (LACW_CODES.includes(normalized)) return "lacw";
     if (JBL_CODES.includes(normalized)) return "jbl";
     if (RGA_CODES.includes(normalized)) return "rga";
+    if (COUNSEL_CODES.includes(normalized)) return "counsel";
     if (ADMIN_CODES.includes(normalized)) return "admin";
     return null;
   };
