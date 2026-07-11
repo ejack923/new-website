@@ -82,6 +82,8 @@ export default function App() {
       <Route path="/vals-medicalworksheet" element={<VALSPortal />} />
       <Route path="/vals-memoprecedent" element={<VALSPortal />} />
       <Route path="/vals-emails" element={<VALSPortal />} />
+      <Route path="/vals-feeslipinvoicepayment" element={<VALSPortal />} />
+      <Route path="/vals-monthlytrustreceipts" element={<VALSPortal />} />
 
       {/* LACW Portal routes */}
       <Route path="/lacw-portal" element={<LACWPortal />} />
@@ -121,6 +123,8 @@ export default function App() {
       <Route path="/rga-medicalworksheet" element={<RGAPortal />} />
       <Route path="/rga-memoprecedent" element={<RGAPortal />} />
       <Route path="/rga-emails" element={<RGAPortal />} />
+      <Route path="/rga-feeslipinvoicepayment" element={<RGAPortal />} />
+      <Route path="/rga-monthlytrustreceipts" element={<RGAPortal />} />
 
 
       <Route path="/EASLegalCertification" element={<EASCertification />} />
@@ -131,6 +135,8 @@ export default function App() {
       <Route path="/admin-appealcostcertificate" element={<AdminPortal />} />
       <Route path="/admin-lacw-appealcostcertificate" element={<AdminPortal />} />
       <Route path="/admin-lacw-feeslipinvoicepayment" element={<AdminPortal />} />
+      <Route path="/admin-rgatrustreceipts" element={<AdminPortal />} />
+      <Route path="/admin-valstrustreceipts" element={<AdminPortal />} />
       <Route path="/inbox" element={<AdminPortal />} />
       <Route path="/admin-deadline-guard" element={<AdminPortal />} />
       <Route path="/admin-audit-manager" element={<AdminPortal />} />
