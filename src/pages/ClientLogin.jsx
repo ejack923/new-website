@@ -22,6 +22,22 @@ const DEFAULT_ACCOUNTS = [
   { email: "counsel@completelawsupport.com.au", username: "counsel", password: "CounselPortal2026", portal: "counsel" }
 ];
 
+// Helper to generate a valid, deterministic UUID from a string (such as an email address)
+function getDeterministicUuid(str) {
+  let h1 = 0x811c9dc5;
+  let h2 = 0xcbf29ce4;
+  for (let i = 0; i < str.length; i++) {
+    h1 = Math.imul(h1 ^ str.charCodeAt(i), 16777619);
+    h2 = Math.imul(h2 ^ str.charCodeAt(i), 1099511628211);
+  }
+  const hex1 = Math.abs(h1).toString(16).padStart(8, "0");
+  const hex2 = Math.abs(h2).toString(16).padStart(8, "0");
+  const hex3 = Math.abs(h1 ^ h2).toString(16).padStart(8, "0");
+  const hex4 = Math.abs(h1 & h2).toString(16).padStart(8, "0");
+  const hex = (hex1 + hex2 + hex3 + hex4).padEnd(32, "a");
+  return `${hex.slice(0, 8)}-${hex.slice(8, 12)}-${hex.slice(12, 16)}-${hex.slice(16, 20)}-${hex.slice(20, 32)}`;
+}
+
 export default function ClientLogin() {
   const navigate = useNavigate();
 
@@ -78,7 +94,7 @@ export default function ClientLogin() {
     
     try {
       const normalizedEmail = email.trim().toLowerCase();
-      const draftId = "signup_" + normalizedEmail.replace(/[^a-zA-Z0-9]/g, "_");
+      const draftId = getDeterministicUuid(normalizedEmail);
       
       // Fetch the signup request draft
       const getRes = await fetch(`https://portal.completelawsupport.com/api/vals-drafts?id=${encodeURIComponent(draftId)}`);
@@ -173,7 +189,7 @@ export default function ClientLogin() {
       }
 
       // 2. Check draft database for signup_request
-      const draftId = "signup_" + normalizedEmail.replace(/[^a-zA-Z0-9]/g, "_");
+      const draftId = getDeterministicUuid(normalizedEmail);
       const checkRes = await fetch(`https://portal.completelawsupport.com/api/vals-drafts?id=${encodeURIComponent(draftId)}`);
       
       if (checkRes.ok) {
@@ -279,7 +295,7 @@ export default function ClientLogin() {
       }
 
       // Check draft database first to see if they already submitted a request
-      const draftId = "signup_" + normalizedEmail.replace(/[^a-zA-Z0-9]/g, "_");
+      const draftId = getDeterministicUuid(normalizedEmail);
       const checkRes = await fetch(`https://portal.completelawsupport.com/api/vals-drafts?id=${encodeURIComponent(draftId)}`);
       
       if (checkRes.ok) {
