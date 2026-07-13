@@ -71,6 +71,7 @@ export default function App() {
       <Route path="/eas-certification" element={<EASPortal />} />
       <Route path="/eas-aidapplication" element={<EASPortal />} />
       <Route path="/eas-applyforaid" element={<EASPortal />} />
+      <Route path="/eas-draftforms" element={<EASPortal />} />
 
       {/* VALS Portal routes */}
       <Route path="/vals-portal" element={<VALSPortal />} />
@@ -85,6 +86,7 @@ export default function App() {
       <Route path="/vals-emails" element={<VALSPortal />} />
       <Route path="/vals-feeslipinvoicepayment" element={<VALSPortal />} />
       <Route path="/vals-monthlytrustreceipts" element={<VALSPortal />} />
+      <Route path="/vals-draftforms" element={<VALSPortal />} />
 
       {/* LACW Portal routes */}
       <Route path="/lacw-portal" element={<LACWPortal />} />
@@ -100,6 +102,7 @@ export default function App() {
       <Route path="/lacw-appealcostcertificate" element={<LACWPortal />} />
       <Route path="/lacw-emails" element={<LACWPortal />} />
       <Route path="/lacw-feeslipinvoicepayment" element={<LACWPortal />} />
+      <Route path="/lacw-draftforms" element={<LACWPortal />} />
 
       {/* JBL Portal routes */}
       <Route path="/jbl-portal" element={<JBLPortal />} />
@@ -113,6 +116,7 @@ export default function App() {
       <Route path="/jbl-memoprecedent" element={<JBLPortal />} />
       <Route path="/jbl-conflictcheck" element={<JBLPortal />} />
       <Route path="/jbl-audit-manager" element={<JBLPortal />} />
+      <Route path="/jbl-draftforms" element={<JBLPortal />} />
 
       {/* RGA Portal routes */}
       <Route path="/rga-portal" element={<RGAPortal />} />
@@ -126,6 +130,7 @@ export default function App() {
       <Route path="/rga-emails" element={<RGAPortal />} />
       <Route path="/rga-feeslipinvoicepayment" element={<RGAPortal />} />
       <Route path="/rga-monthlytrustreceipts" element={<RGAPortal />} />
+      <Route path="/rga-draftforms" element={<RGAPortal />} />
 
       {/* Counsel Portal routes */}
       <Route path="/counsel-portal" element={<CounselPortal />} />
@@ -145,6 +150,7 @@ export default function App() {
       <Route path="/admin-lacw-feeslipinvoicepayment" element={<AdminPortal />} />
       <Route path="/admin-rgatrustreceipts" element={<AdminPortal />} />
       <Route path="/admin-valstrustreceipts" element={<AdminPortal />} />
+      <Route path="/admin-draftforms" element={<AdminPortal />} />
       <Route path="/inbox" element={<AdminPortal />} />
       <Route path="/admin-deadline-guard" element={<AdminPortal />} />
       <Route path="/admin-audit-manager" element={<AdminPortal />} />
