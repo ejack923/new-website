@@ -33,7 +33,7 @@ export default function ClientLogin() {
   const [passwordInput, setPasswordInput] = useState("");
 
   // Registration inputs
-  const [regFirmCode, setRegFirmCode] = useState("");
+  const [regFirmName, setRegFirmName] = useState("");
   const [regEmail, setRegEmail] = useState("");
   const [regPassword, setRegPassword] = useState("");
   const [regConfirmPassword, setRegConfirmPassword] = useState("");
@@ -41,14 +41,85 @@ export default function ClientLogin() {
   // Feedback states
   const [errorMsg, setErrorMsg] = useState("");
   const [successMsg, setSuccessMsg] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
-  // Check for deep-linked setup query parameter
+  // Helper to map portal key to list of codes for backwards compatibility
+  const getPortalFromCode = (code) => {
+    const normalized = code.trim().toLowerCase();
+    if (EAS_CODES.includes(normalized)) return "eas";
+    if (VALS_CODES.includes(normalized)) return "vals";
+    if (LACW_CODES.includes(normalized)) return "lacw";
+    if (JBL_CODES.includes(normalized)) return "jbl";
+    if (RGA_CODES.includes(normalized)) return "rga";
+    if (COUNSEL_CODES.includes(normalized)) return "counsel";
+    if (ADMIN_CODES.includes(normalized)) return "admin";
+    return null;
+  };
+
+  // Check for query parameters (setup, action, email, portal)
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
     if (params.get("setup") === "true") {
       setIsRegistering(true);
     }
+
+    const action = params.get("action");
+    const email = params.get("email");
+    const portal = params.get("portal");
+
+    if (action && email) {
+      handleAdminAction(action, email, portal);
+    }
   }, []);
+
+  const handleAdminAction = async (action, email, portal) => {
+    setErrorMsg("");
+    setSuccessMsg("Processing administrator action...");
+    
+    try {
+      const normalizedEmail = email.trim().toLowerCase();
+      const draftId = "signup_" + normalizedEmail.replace(/[^a-zA-Z0-9]/g, "_");
+      
+      // Fetch the signup request draft
+      const getRes = await fetch(`https://portal.completelawsupport.com/api/vals-drafts?id=${encodeURIComponent(draftId)}`);
+      if (!getRes.ok) {
+        throw new Error("Signup request not found in database.");
+      }
+      const draft = await getRes.json();
+      
+      if (!draft.form_data) {
+        throw new Error("Invalid draft structure.");
+      }
+      
+      const updatedFormData = {
+        ...draft.form_data,
+        status: action === "approve" ? "approved" : "rejected",
+        portal: action === "approve" ? portal : null
+      };
+      
+      // PATCH draft in database
+      const patchRes = await fetch(`https://portal.completelawsupport.com/api/vals-drafts?id=${encodeURIComponent(draftId)}`, {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          form_data: updatedFormData
+        })
+      });
+      
+      if (!patchRes.ok) {
+        throw new Error("Failed to update database.");
+      }
+      
+      if (action === "approve") {
+        setSuccessMsg(`Successfully approved ${normalizedEmail} for portal: ${portal.toUpperCase()}`);
+      } else {
+        setSuccessMsg(`Successfully rejected signup request for ${normalizedEmail}`);
+      }
+    } catch (err) {
+      console.error(err);
+      setErrorMsg(err.message || "Failed to process admin action.");
+    }
+  };
 
   // Retrieve existing users from localStorage
   const getUsers = () => {
@@ -72,20 +143,7 @@ export default function ClientLogin() {
     }
   };
 
-  // Helper to map code to portal key
-  const getPortalFromCode = (code) => {
-    const normalized = code.trim().toLowerCase();
-    if (EAS_CODES.includes(normalized)) return "eas";
-    if (VALS_CODES.includes(normalized)) return "vals";
-    if (LACW_CODES.includes(normalized)) return "lacw";
-    if (JBL_CODES.includes(normalized)) return "jbl";
-    if (RGA_CODES.includes(normalized)) return "rga";
-    if (COUNSEL_CODES.includes(normalized)) return "counsel";
-    if (ADMIN_CODES.includes(normalized)) return "admin";
-    return null;
-  };
-
-  const handleLoginSubmit = (e) => {
+  const handleLoginSubmit = async (e) => {
     e.preventDefault();
     setErrorMsg("");
     setSuccessMsg("");
@@ -93,47 +151,111 @@ export default function ClientLogin() {
     const normalizedEmail = emailInput.trim().toLowerCase();
     const password = passwordInput.trim();
 
-    // 1. Check default built-in accounts (email or username match)
-    const matchedDefault = DEFAULT_ACCOUNTS.find(
-      (acc) => 
-        (normalizedEmail === acc.email || normalizedEmail === acc.username) && 
-        password === acc.password
-    );
+    setIsSubmitting(true);
+    try {
+      // 1. Check default built-in accounts
+      const matchedDefault = DEFAULT_ACCOUNTS.find(
+        (acc) => 
+          (normalizedEmail === acc.email || normalizedEmail === acc.username) && 
+          password === acc.password
+      );
 
-    if (matchedDefault) {
-      sessionStorage.setItem("cls_auth", matchedDefault.portal);
-      navigate(`/${matchedDefault.portal}-portal`);
-      return;
-    }
+      if (matchedDefault) {
+        sessionStorage.setItem("cls_auth", matchedDefault.portal);
+        const redirect = sessionStorage.getItem("login_redirect");
+        sessionStorage.removeItem("login_redirect");
+        if (redirect) {
+          navigate(redirect);
+        } else {
+          navigate(`/${matchedDefault.portal}-portal`);
+        }
+        return;
+      }
 
-    // 2. Check registered credentials in localStorage
-    const users = getUsers();
-    const matchedUser = users.find(
-      (u) => u.email.toLowerCase() === normalizedEmail && u.password === passwordInput
-    );
+      // 2. Check draft database for signup_request
+      const draftId = "signup_" + normalizedEmail.replace(/[^a-zA-Z0-9]/g, "_");
+      const checkRes = await fetch(`https://portal.completelawsupport.com/api/vals-drafts?id=${encodeURIComponent(draftId)}`);
+      
+      if (checkRes.ok) {
+        const dbUser = await checkRes.json();
+        if (dbUser && dbUser.form_data && dbUser.form_data.email.toLowerCase() === normalizedEmail) {
+          const { status, password: dbPassword, portal } = dbUser.form_data;
+          
+          if (status === "pending") {
+            setErrorMsg("Your registration is pending approval by the administrator.");
+            setIsSubmitting(false);
+            return;
+          }
+          
+          if (status === "rejected") {
+            setErrorMsg("Your registration request was declined. Please contact support.");
+            setIsSubmitting(false);
+            return;
+          }
+          
+          if (status === "approved") {
+            if (dbPassword === password) {
+              // Cache locally
+              const newUser = {
+                email: normalizedEmail,
+                password: password,
+                portal: portal
+              };
+              saveUser(newUser);
 
-    if (matchedUser) {
-      sessionStorage.setItem("cls_auth", matchedUser.portal);
-      navigate(`/${matchedUser.portal}-portal`);
-    } else {
-      setErrorMsg("Invalid email address or password. Please try again.");
-      setPasswordInput("");
+              sessionStorage.setItem("cls_auth", portal);
+              const redirect = sessionStorage.getItem("login_redirect");
+              sessionStorage.removeItem("login_redirect");
+              if (redirect) {
+                navigate(redirect);
+              } else {
+                navigate(`/${portal}-portal`);
+              }
+              return;
+            } else {
+              setErrorMsg("Invalid email address or password. Please try again.");
+              setPasswordInput("");
+              setIsSubmitting(false);
+              return;
+            }
+          }
+        }
+      }
+
+      // 3. Fallback: Check local registered credentials in localStorage
+      const users = getUsers();
+      const matchedUser = users.find(
+        (u) => u.email.toLowerCase() === normalizedEmail && u.password === password
+      );
+
+      if (matchedUser) {
+        sessionStorage.setItem("cls_auth", matchedUser.portal);
+        const redirect = sessionStorage.getItem("login_redirect");
+        sessionStorage.removeItem("login_redirect");
+        if (redirect) {
+          navigate(redirect);
+        } else {
+          navigate(`/${matchedUser.portal}-portal`);
+        }
+      } else {
+        setErrorMsg("Invalid email address or password. Please try again.");
+        setPasswordInput("");
+      }
+    } catch (err) {
+      console.error(err);
+      setErrorMsg("Connection error verifying credentials.");
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
-  const handleRegisterSubmit = (e) => {
+  const handleRegisterSubmit = async (e) => {
     e.preventDefault();
     setErrorMsg("");
     setSuccessMsg("");
 
     const normalizedEmail = regEmail.trim().toLowerCase();
-
-    // Validate Firm Access Code
-    const portal = getPortalFromCode(regFirmCode);
-    if (!portal) {
-      setErrorMsg("Invalid Firm Access Code. Please enter a valid code provided by your firm.");
-      return;
-    }
+    const firmName = regFirmName.trim();
 
     // Validate passwords match
     if (regPassword !== regConfirmPassword) {
@@ -147,29 +269,87 @@ export default function ClientLogin() {
       return;
     }
 
-    // Check if email already registered
-    const users = getUsers();
-    const emailExists = users.some((u) => u.email.toLowerCase() === normalizedEmail);
-    if (emailExists) {
-      setErrorMsg("This email address is already registered.");
-      return;
+    setIsSubmitting(true);
+    try {
+      const matchedDefault = DEFAULT_ACCOUNTS.find(acc => acc.email === normalizedEmail);
+      if (matchedDefault) {
+        setErrorMsg("This email address is a system default account.");
+        setIsSubmitting(false);
+        return;
+      }
+
+      // Check draft database first to see if they already submitted a request
+      const draftId = "signup_" + normalizedEmail.replace(/[^a-zA-Z0-9]/g, "_");
+      const checkRes = await fetch(`https://portal.completelawsupport.com/api/vals-drafts?id=${encodeURIComponent(draftId)}`);
+      
+      if (checkRes.ok) {
+        const existingDraft = await checkRes.json();
+        if (existingDraft && existingDraft.form_data) {
+          if (existingDraft.form_data.status === "pending") {
+            setErrorMsg("A signup request is already pending for this email address.");
+            setIsSubmitting(false);
+            return;
+          }
+          if (existingDraft.form_data.status === "approved") {
+            setErrorMsg("This email address is already approved. Please sign in.");
+            setIsSubmitting(false);
+            return;
+          }
+        }
+      }
+
+      // Save registration request as a draft in shared database
+      const payload = {
+        id: draftId,
+        form_type: 'signup_request',
+        draft_name: `Signup Request: ${normalizedEmail}`,
+        brand: 'all',
+        form_data: {
+          email: normalizedEmail,
+          password: regPassword,
+          firm_name: firmName,
+          status: 'pending',
+          portal: null
+        }
+      };
+
+      const res = await fetch('https://portal.completelawsupport.com/api/vals-drafts', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      });
+
+      if (!res.ok) {
+        throw new Error("Failed to save signup request to database.");
+      }
+
+      // Send approval email notification to Emma via our serverless endpoint
+      const emailRes = await fetch('/api/send-signup-request', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          email: normalizedEmail,
+          firmName: firmName
+        })
+      });
+
+      if (!emailRes.ok) {
+        console.warn("Email alert failed to send.");
+      }
+
+      setSuccessMsg("Account request submitted! An approval email has been sent to ejackson@completelawsupport.com.");
+      
+      // Clear forms
+      setRegEmail("");
+      setRegPassword("");
+      setRegConfirmPassword("");
+      setRegFirmName("");
+    } catch (err) {
+      console.error(err);
+      setErrorMsg(err.message || "Failed to submit registration request.");
+    } finally {
+      setIsSubmitting(false);
     }
-
-    // Register user
-    const newUser = {
-      email: normalizedEmail,
-      password: regPassword,
-      portal: portal,
-    };
-    saveUser(newUser);
-
-    setSuccessMsg("Account registered successfully! Logging you in...");
-
-    // Auto log in after 1.5 seconds
-    setTimeout(() => {
-      sessionStorage.setItem("cls_auth", portal);
-      navigate(`/${portal}-portal`);
-    }, 1500);
   };
 
   const clearFormStates = () => {
@@ -177,7 +357,7 @@ export default function ClientLogin() {
     setSuccessMsg("");
     setEmailInput("");
     setPasswordInput("");
-    setRegFirmCode("");
+    setRegFirmName("");
     setRegEmail("");
     setRegPassword("");
     setRegConfirmPassword("");
@@ -219,7 +399,7 @@ export default function ClientLogin() {
           </h1>
           <p className="mt-3 text-sm text-neutral-500 leading-6">
             {isRegistering
-              ? "Create your personal login and password using your firm's access code."
+              ? "Create your personal login and password by entering your firm name."
               : "Enter your personal email and password to reach the client portal."}
           </p>
 
@@ -281,9 +461,10 @@ export default function ClientLogin() {
 
                 <button
                   type="submit"
-                  className="w-full rounded-full bg-blue-600 py-3 mt-2 text-sm font-medium text-white transition hover:bg-blue-700"
+                  disabled={isSubmitting}
+                  className="w-full rounded-full bg-blue-600 py-3 mt-2 text-sm font-medium text-white transition hover:bg-blue-700 disabled:bg-blue-400 disabled:cursor-not-allowed"
                 >
-                  Sign in
+                  {isSubmitting ? "Verifying..." : "Sign in"}
                 </button>
               </form>
 
@@ -304,21 +485,21 @@ export default function ClientLogin() {
               <form onSubmit={handleRegisterSubmit} className="space-y-4">
                 <div>
                   <label className="block text-xs uppercase tracking-[0.2em] text-neutral-500 mb-2">
-                    Firm Access Code
+                    Which firm are you part of?
                   </label>
                   <input
-                    type="password"
-                    value={regFirmCode}
-                    onChange={(e) => { setRegFirmCode(e.target.value); setErrorMsg(""); }}
-                    placeholder="Enter your initial access code"
+                    type="text"
+                    value={regFirmName}
+                    onChange={(e) => { setRegFirmName(e.target.value); setErrorMsg(""); }}
+                    placeholder="Enter your firm name"
                     className={`w-full border px-4 py-3 text-sm outline-none transition focus:border-blue-600 ${
-                      errorMsg && errorMsg.includes("Access Code") ? "border-red-400 bg-red-50" : "border-neutral-200"
+                      errorMsg && errorMsg.includes("firm") ? "border-red-400 bg-red-50" : "border-neutral-200"
                     }`}
                     required
                     autoFocus
                   />
                   <p className="mt-1 text-[11px] text-neutral-400">
-                    Used to authenticate and link your account to your firm's portal.
+                    Your request will be submitted to the administrator for approval.
                   </p>
                 </div>
 
@@ -372,9 +553,10 @@ export default function ClientLogin() {
 
                 <button
                   type="submit"
-                  className="w-full rounded-full bg-blue-600 py-3 mt-2 text-sm font-medium text-white transition hover:bg-blue-700"
+                  disabled={isSubmitting}
+                  className="w-full rounded-full bg-blue-600 py-3 mt-2 text-sm font-medium text-white transition hover:bg-blue-700 disabled:bg-blue-400 disabled:cursor-not-allowed"
                 >
-                  Set up Account
+                  {isSubmitting ? "Submitting request..." : "Set up Account"}
                 </button>
               </form>
 
