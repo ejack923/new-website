@@ -78,7 +78,7 @@ export default function RGAPortal() {
           src={iframeSrc}
           title="RGA Portal"
           className="absolute inset-0 w-full h-full border-none"
-          allow="camera; print; download; clipboard-write"
+          allow="camera; clipboard-write"
         />
       </div>
 
