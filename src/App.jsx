@@ -88,6 +88,7 @@ export default function App() {
       <Route path="/vals-feeslipinvoicepayment" element={<VALSPortal />} />
       <Route path="/vals-monthlytrustreceipts" element={<VALSPortal />} />
       <Route path="/vals-draftforms" element={<VALSPortal />} />
+      <Route path="/vals-diary" element={<VALSPortal />} />
       <Route path="/vals-additionalprepworksheet" element={<VALSPortal />} />
 
       {/* LACW Portal routes */}
