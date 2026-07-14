@@ -19,7 +19,7 @@ export default function AdminPortal() {
 
   const currentPath = location.pathname;
   const currentSearch = location.search;
-  const iframeSrc = `https://portal.completelawsupport.com${currentPath}${currentSearch}${currentSearch ? '&' : '?'}back=https://completelawsupport.com/admin-portal`;
+  const iframeSrc = `https://portal.completelawsupport.com${currentPath}${currentSearch}${currentSearch ? '&' : '?'}v=1.5&back=https://completelawsupport.com/admin-portal`;
 
   return (
     <div className="h-screen bg-white font-sans flex flex-col overflow-hidden relative">
