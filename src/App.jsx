@@ -11,11 +11,14 @@ import VALSCertification from "./pages/VALSCertification";
 import AdminPortal from "./pages/AdminPortal";
 import RGAPortal from "./pages/RGAPortal";
 import CounselPortal from "./pages/CounselPortal";
+import { PORTAL_ORIGIN } from "./lib/portalSession";
 
 
 export default function App() {
   useEffect(() => {
     const handleMessage = (event) => {
+      // Only the framed portal (or this site's own pages) may drive navigation or read this site's storage.
+      if (event.origin !== PORTAL_ORIGIN && event.origin !== window.location.origin) return;
       if (!event.data) return;
 
       if (event.data.type === "PORTAL_NAVIGATE" && event.data.path) {

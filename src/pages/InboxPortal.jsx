@@ -1,19 +1,14 @@
-import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import { usePortalGate } from "../lib/portalSession";
 
 export default function InboxPortal() {
   const navigate = useNavigate();
 
-  useEffect(() => {
-    if (sessionStorage.getItem("cls_auth") !== "admin") {
-      navigate("/client-login");
-    }
-  }, [navigate]);
+  const { ready, signOut } = usePortalGate("admin");
 
-  const handleLogout = () => {
-    sessionStorage.removeItem("cls_auth");
-    navigate("/");
-  };
+  const handleLogout = signOut;
+
+  if (!ready) return <div className="h-screen bg-white" />;
 
   const iframeSrc = "https://portal.completelawsupport.com/Inbox?back=https://completelawsupport.com/client-login";
 

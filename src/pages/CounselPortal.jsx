@@ -1,18 +1,13 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
+import { usePortalGate } from "../lib/portalSession";
 
 export default function CounselPortal() {
   const navigate = useNavigate();
   const location = useLocation();
   const [isDragging, setIsDragging] = useState(false);
 
-  useEffect(() => {
-    const auth = sessionStorage.getItem("cls_auth");
-    if (auth !== "counsel" && auth !== "admin") {
-      sessionStorage.setItem("login_redirect", window.location.pathname + window.location.search);
-      navigate("/client-login");
-    }
-  }, [navigate]);
+  const { ready, isAdmin, signOut } = usePortalGate("counsel");
 
   useEffect(() => {
     const handleMessage = (e) => {
@@ -24,10 +19,9 @@ export default function CounselPortal() {
     return () => window.removeEventListener("message", handleMessage);
   }, []);
 
-  const handleLogout = () => {
-    sessionStorage.removeItem("cls_auth");
-    navigate("/");
-  };
+  const handleLogout = signOut;
+
+  if (!ready) return <div className="h-screen bg-white" />;
 
   const currentPath = location.pathname;
   const currentSearch = location.search;
@@ -55,7 +49,7 @@ export default function CounselPortal() {
             </div>
           </div>
           <div className="flex items-center gap-4">
-            {sessionStorage.getItem("cls_auth") === "admin" && (
+            {isAdmin && (
               <button
                 onClick={() => navigate("/admin-portal")}
                 className="text-sm font-semibold text-blue-600 hover:text-blue-700 transition"

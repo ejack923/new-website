@@ -1,3 +1,8 @@
+// Visitors type these values, so they must not be able to put links or markup in Emma's email.
+function escapeHtml(value) {
+  return value.replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[c]);
+}
+
 export default async function handler(req, res) {
   res.setHeader("Access-Control-Allow-Credentials", "true");
   res.setHeader("Access-Control-Allow-Origin", "*");
@@ -25,7 +30,8 @@ export default async function handler(req, res) {
 
   try {
     const payload = typeof req.body === "string" ? JSON.parse(req.body || "{}") : req.body || {};
-    const { email, firmName } = payload;
+    const email = escapeHtml(String(payload.email || "").trim());
+    const firmName = escapeHtml(String(payload.firmName || "").trim());
 
     if (!email || !firmName) {
       res.status(400).json({ error: "Missing required fields (email, firmName)" });
@@ -55,24 +61,10 @@ export default async function handler(req, res) {
             </tr>
           </table>
         </div>
-        <p style="font-size: 15px; color: #4a5568; font-weight: bold; margin-bottom: 12px;">
-          Approve this user and assign them to a firm portal by clicking a link below:
-        </p>
-        <ul style="padding-left: 20px; margin-top: 0; line-height: 2;">
-          <li><a href="https://completelawsupport.com/client-login?action=approve&email=${encodeURIComponent(email)}&portal=rga" style="color: #3182ce; text-decoration: none; font-weight: bold;">Approve for RGA (Robyn Greensill & Associates)</a></li>
-          <li><a href="https://completelawsupport.com/client-login?action=approve&email=${encodeURIComponent(email)}&portal=lacw" style="color: #3182ce; text-decoration: none; font-weight: bold;">Approve for LACW (Law and Advocacy Centre for Women)</a></li>
-          <li><a href="https://completelawsupport.com/client-login?action=approve&email=${encodeURIComponent(email)}&portal=vals" style="color: #3182ce; text-decoration: none; font-weight: bold;">Approve for VALS (Victorian Aboriginal Legal Service)</a></li>
-          <li><a href="https://completelawsupport.com/client-login?action=approve&email=${encodeURIComponent(email)}&portal=jbl" style="color: #3182ce; text-decoration: none; font-weight: bold;">Approve for JBL (Jarrod Baxter Law)</a></li>
-          <li><a href="https://completelawsupport.com/client-login?action=approve&email=${encodeURIComponent(email)}&portal=eas" style="color: #3182ce; text-decoration: none; font-weight: bold;">Approve for EAS Legal</a></li>
-          <li><a href="https://completelawsupport.com/client-login?action=approve&email=${encodeURIComponent(email)}&portal=counsel" style="color: #3182ce; text-decoration: none; font-weight: bold;">Approve for Counsel / Barrister</a></li>
-          <li><a href="https://completelawsupport.com/client-login?action=approve&email=${encodeURIComponent(email)}&portal=admin" style="color: #3182ce; text-decoration: none; font-weight: bold;">Approve for Admin Portal</a></li>
-        </ul>
-        <hr style="border: 0; border-top: 1px solid #edf2f7; margin: 24px 0;" />
-        <p style="font-size: 15px; color: #4a5568;">
-          To decline this request:
-        </p>
-        <p>
-          <a href="https://completelawsupport.com/client-login?action=reject&email=${encodeURIComponent(email)}" style="color: #e53e3e; text-decoration: none; font-weight: bold;">Reject Signup Request</a>
+        <p style="font-size: 15px; color: #4a5568; line-height: 1.6;">
+          No account has been created. If this person should have access, add them as a user in the
+          portal's sign-in system and assign their firm, then let them know how to sign in.
+          If not, no action is needed.
         </p>
       </div>
     `;
@@ -86,7 +78,7 @@ export default async function handler(req, res) {
       body: JSON.stringify({
         from: fromAddress,
         to: ["ejackson@completelawsupport.com"],
-        subject: `Pending Signup Approval - ${firmName}`,
+        subject: `Portal access request - ${String(payload.firmName).trim().replace(/\s+/g, " ").slice(0, 100)}`,
         html: htmlContent,
       }),
     });
