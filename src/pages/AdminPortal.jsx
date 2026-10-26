@@ -37,6 +37,15 @@ export default function AdminPortal() {
             </div>
           </div>
           <div className="flex items-center gap-6">
+            {/* Opens the ATLAS Operations Suite desktop app on this computer (it registers atlas-ops://) */}
+            <a
+              href="atlas-ops://open"
+              title="Opens the ATLAS Operations Suite on this computer"
+              className="flex items-center gap-1.5 bg-white hover:bg-neutral-50 border border-neutral-200 px-3.5 py-1.5 rounded-full text-xs font-semibold text-neutral-750 transition"
+            >
+              Open Operations Suite
+            </a>
+
             {/* Access Client Portals Dropdown */}
             <div className="relative">
               <button 
