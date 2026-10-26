@@ -1,21 +1,17 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
+import { usePortalGate } from "../lib/portalSession";
 
 export default function AdminPortal() {
   const navigate = useNavigate();
   const location = useLocation();
   const [dropdownOpen, setDropdownOpen] = useState(false);
 
-  useEffect(() => {
-    if (sessionStorage.getItem("cls_auth") !== "admin") {
-      navigate("/client-login");
-    }
-  }, [navigate]);
+  const { ready, signOut } = usePortalGate("admin");
 
-  const handleLogout = () => {
-    sessionStorage.removeItem("cls_auth");
-    navigate("/");
-  };
+  const handleLogout = signOut;
+
+  if (!ready) return <div className="h-screen bg-white" />;
 
   const currentPath = location.pathname;
   const currentSearch = location.search;

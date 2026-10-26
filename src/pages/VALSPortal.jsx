@@ -1,17 +1,13 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
+import { usePortalGate } from "../lib/portalSession";
 
 export default function VALSPortal() {
   const navigate = useNavigate();
   const location = useLocation();
   const [isDragging, setIsDragging] = useState(false);
 
-  useEffect(() => {
-    const auth = sessionStorage.getItem("cls_auth");
-    if (auth !== "vals" && auth !== "admin") {
-      navigate("/client-login");
-    }
-  }, [navigate]);
+  const { ready, isAdmin, signOut } = usePortalGate("vals");
 
   useEffect(() => {
     const handleMessage = (e) => {
@@ -23,10 +19,9 @@ export default function VALSPortal() {
     return () => window.removeEventListener("message", handleMessage);
   }, []);
 
-  const handleLogout = () => {
-    sessionStorage.removeItem("cls_auth");
-    navigate("/");
-  };
+  const handleLogout = signOut;
+
+  if (!ready) return <div className="h-screen bg-white" />;
 
   const currentPath = location.pathname;
   const currentSearch = location.search;
@@ -54,7 +49,7 @@ export default function VALSPortal() {
             </div>
           </div>
           <div className="flex items-center gap-4">
-            {sessionStorage.getItem("cls_auth") === "admin" && (
+            {isAdmin && (
               <button
                 onClick={() => navigate("/admin-portal")}
                 className="text-sm font-semibold text-blue-600 hover:text-blue-700 transition"
