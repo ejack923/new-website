@@ -75,6 +75,7 @@ export default function App() {
       <Route path="/eas-aidapplication" element={<EASPortal />} />
       <Route path="/eas-applyforaid" element={<EASPortal />} />
       <Route path="/eas-draftforms" element={<EASPortal />} />
+      <Route path="/eas-submittedinvoices" element={<EASPortal />} />
       <Route path="/eas-additionalprepworksheet" element={<EASPortal />} />
 
       {/* VALS Portal routes */}
@@ -89,6 +90,7 @@ export default function App() {
       <Route path="/vals-memoprecedent" element={<VALSPortal />} />
       <Route path="/vals-emails" element={<VALSPortal />} />
       <Route path="/vals-feeslipinvoicepayment" element={<VALSPortal />} />
+      <Route path="/vals-submittedinvoices" element={<VALSPortal />} />
       <Route path="/vals-monthlytrustreceipts" element={<VALSPortal />} />
       <Route path="/vals-draftforms" element={<VALSPortal />} />
       <Route path="/vals-diary" element={<VALSPortal />} />
@@ -108,6 +110,7 @@ export default function App() {
       <Route path="/lacw-appealcostcertificate" element={<LACWPortal />} />
       <Route path="/lacw-emails" element={<LACWPortal />} />
       <Route path="/lacw-feeslipinvoicepayment" element={<LACWPortal />} />
+      <Route path="/lacw-submittedinvoices" element={<LACWPortal />} />
       <Route path="/lacw-draftforms" element={<LACWPortal />} />
       <Route path="/lacw-additionalprepworksheet" element={<LACWPortal />} />
 
