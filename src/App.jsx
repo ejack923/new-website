@@ -111,6 +111,7 @@ export default function App() {
       <Route path="/lacw-emails" element={<LACWPortal />} />
       <Route path="/lacw-feeslipinvoicepayment" element={<LACWPortal />} />
       <Route path="/lacw-submittedinvoices" element={<LACWPortal />} />
+      <Route path="/lacw-monthlytrustreceipts" element={<LACWPortal />} />
       <Route path="/lacw-draftforms" element={<LACWPortal />} />
       <Route path="/lacw-additionalprepworksheet" element={<LACWPortal />} />
 
