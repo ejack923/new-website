@@ -8,8 +8,12 @@
 //   files  - the PDFs in it (and one level of folders inside it)
 //   unlink - forget the folder
 //
+// The same four requests with kind "cms" are for the portal's Court listings page (Emma,
+// 7 Nov 2026): a separate folder (Downloads for Emma) where the CMS Portal hearings list is
+// downloaded, answered with only the spreadsheets saved there in the last week.
+//
 // It answers only the portal (portal.completelawsupport.com), only a frame on this page, and
-// only with PDFs from the folder Emma chose. What is kept in this browser is the folder
+// only with PDFs (or, for kind "cms", recent spreadsheets) from the folder Emma chose. What is kept in this browser is the folder
 // itself - a handle Chrome gives the page, not a copy of anything in it.
 
 const PORTAL_ORIGIN = "https://portal.completelawsupport.com";
@@ -55,9 +59,34 @@ async function listPdfs(handle) {
   return files;
 }
 
+// Recent spreadsheets at the top of the folder only, newest first (Downloads is big).
+const CMS_RECENT_MS = 7 * 24 * 60 * 60 * 1000;
+async function listRecentSpreadsheets(handle) {
+  const files = [];
+  const since = Date.now() - CMS_RECENT_MS;
+  for await (const entry of handle.values()) {
+    if (entry.kind !== "file" || !/\.(xlsx|xls|csv)$/i.test(entry.name)) continue;
+    const file = await entry.getFile();
+    if (file.lastModified >= since) files.push(file);
+  }
+  return files.sort((a, b) => b.lastModified - a.lastModified).slice(0, 10);
+}
+
+const FOLDER_KINDS = {
+  receipts: { key: keyFor, pickerId: "atlas-claim-receipts", startIn: "documents", list: listPdfs },
+  cms: { key: () => "cms-folder", pickerId: "cms-hearings", startIn: "downloads", list: listRecentSpreadsheets },
+};
+
 async function handleRequest(op, data) {
   if (typeof window.showDirectoryPicker !== "function") throw new Error("This browser cannot link a folder. Use Chrome.");
-  const key = keyFor(data.brand);
+  const kindName = data.kind === "cms" ? "cms" : "receipts";
+  const kind = FOLDER_KINDS[kindName];
+  const reply = await answer(op, data, kind);
+  return kindName === "cms" ? { ...reply, kind: "cms" } : reply;
+}
+
+async function answer(op, data, kind) {
+  const key = kind.key(data.brand);
   if (op === "status") {
     const handle = await idb("readonly", (store) => store.get(key)).catch(() => null);
     if (!handle) return { linked: false };
@@ -65,7 +94,7 @@ async function handleRequest(op, data) {
     return { linked: true, name: handle.name, permission };
   }
   if (op === "link") {
-    const handle = await window.showDirectoryPicker({ id: "atlas-claim-receipts", mode: "read", startIn: "documents" });
+    const handle = await window.showDirectoryPicker({ id: kind.pickerId, mode: "read", startIn: kind.startIn });
     await idb("readwrite", (store) => store.put(handle, key));
     return { linked: true, name: handle.name, permission: "granted" };
   }
@@ -75,7 +104,7 @@ async function handleRequest(op, data) {
     let permission = await handle.queryPermission({ mode: "read" });
     if (permission !== "granted" && data.interactive) permission = await handle.requestPermission({ mode: "read" });
     if (permission !== "granted") return { permission, files: [] };
-    return { permission, files: await listPdfs(handle) };
+    return { permission, files: await kind.list(handle) };
   }
   if (op === "unlink") {
     await idb("readwrite", (store) => store.delete(key));
