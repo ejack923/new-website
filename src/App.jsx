@@ -71,6 +71,7 @@ export default function App() {
       
       {/* EAS Portal routes */}
       <Route path="/eas-portal" element={<EASPortal />} />
+      <Route path="/eas-cmshearings" element={<EASPortal />} />
       <Route path="/eas-certification" element={<EASPortal />} />
       <Route path="/eas-aidapplication" element={<EASPortal />} />
       <Route path="/eas-applyforaid" element={<EASPortal />} />
@@ -80,6 +81,7 @@ export default function App() {
 
       {/* VALS Portal routes */}
       <Route path="/vals-portal" element={<VALSPortal />} />
+      <Route path="/vals-cmshearings" element={<VALSPortal />} />
       <Route path="/vals-certification" element={<VALSPortal />} />
       <Route path="/vals-aidapplication" element={<VALSPortal />} />
       <Route path="/vals-applyforaid" element={<VALSPortal />} />
@@ -98,6 +100,7 @@ export default function App() {
 
       {/* LACW Portal routes */}
       <Route path="/lacw-portal" element={<LACWPortal />} />
+      <Route path="/lacw-cmshearings" element={<LACWPortal />} />
       <Route path="/lacw-certification" element={<LACWPortal />} />
       <Route path="/lacw-aidapplication" element={<LACWPortal />} />
       <Route path="/lacw-applyforaid" element={<LACWPortal />} />
@@ -132,6 +135,7 @@ export default function App() {
 
       {/* RGA Portal routes */}
       <Route path="/rga-portal" element={<RGAPortal />} />
+      <Route path="/rga-cmshearings" element={<RGAPortal />} />
       <Route path="/rga-matter-workspace" element={<RGAPortal />} />
       <Route path="/rga-certification" element={<RGAPortal />} />
       <Route path="/rga-aidapplication" element={<RGAPortal />} />
