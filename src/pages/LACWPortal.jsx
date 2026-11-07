@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { usePortalGate } from "../lib/portalSession";
+import { useInstallableApp } from "../lib/installableApp";
 
 export default function LACWPortal() {
   const navigate = useNavigate();
@@ -8,6 +9,12 @@ export default function LACWPortal() {
   const [isDragging, setIsDragging] = useState(false);
 
   const { ready, isAdmin, signOut } = usePortalGate("lacw");
+
+  useInstallableApp({
+    manifest: "/lacw-manifest.webmanifest",
+    appleIcon: "/app-icons/lacw-apple-touch-icon.png",
+    title: "LACW Portal",
+  });
 
   useEffect(() => {
     const handleMessage = (e) => {
