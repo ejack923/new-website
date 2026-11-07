@@ -73,7 +73,7 @@ export default function CounselPortal() {
           src={iframeSrc}
           title="Counsel Portal"
           className="absolute inset-0 w-full h-full border-none"
-          allow="camera; clipboard-write"
+          allow="camera; microphone; clipboard-write"
         />
       </div>
 
