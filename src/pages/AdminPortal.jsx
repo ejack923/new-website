@@ -122,7 +122,7 @@ export default function AdminPortal() {
           src={iframeSrc}
           title="Admin Portal"
           className="absolute inset-0 w-full h-full border-none"
-          allow="camera; clipboard-write"
+          allow="camera; microphone; clipboard-write"
         />
       </div>
     </div>

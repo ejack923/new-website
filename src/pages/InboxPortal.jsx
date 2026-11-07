@@ -46,7 +46,7 @@ export default function InboxPortal() {
           src={iframeSrc}
           title="Submissions Inbox"
           className="absolute inset-0 w-full h-full border-none"
-          allow="camera; clipboard-write"
+          allow="camera; microphone; clipboard-write"
         />
       </div>
     </div>
