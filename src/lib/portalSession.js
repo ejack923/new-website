@@ -9,6 +9,20 @@ export const PORTAL_ORIGIN = "https://portal.completelawsupport.com";
 
 const PORTAL_KEYS = ["admin", "eas", "vals", "lacw", "jbl", "rga", "counsel"];
 
+// Two-step sign-in is required for every account. After the password the portal asks for
+// the authenticator code on its own page, then sends the user back to this site's sign-in
+// page, which finds them signed in and carries on as usual.
+export function twoStepSignInUrl(origin = window.location.origin) {
+  return `${PORTAL_ORIGIN}/two-step-sign-in?return_to=${encodeURIComponent(`${origin}/client-login`)}`;
+}
+
+// Leaves for the portal's code page. The returned promise never settles, so the page keeps
+// its "signing in" state until the browser has navigated away.
+function goToTwoStep() {
+  window.location.assign(twoStepSignInUrl());
+  return new Promise(() => {});
+}
+
 async function portalAuth(path, options = {}) {
   return fetch(`${PORTAL_ORIGIN}/api/auth/${path}`, {
     credentials: "include",
@@ -25,6 +39,7 @@ export async function getPortalUser() {
   if (res.status === 401) return null;
   if (!res.ok) throw new Error("Sign-in service unavailable");
   const body = await res.json();
+  if (body.twoStep) return goToTwoStep();
   return body.user || null;
 }
 
@@ -40,7 +55,11 @@ export async function signInToPortal(email, password) {
   } catch {
     throw new Error(UNAVAILABLE_MSG);
   }
-  if (res.ok) return (await res.json()).user;
+  if (res.ok) {
+    const body = await res.json();
+    if (body.twoStep) return goToTwoStep();
+    return body.user;
+  }
   if (res.status === 401 || res.status === 400) {
     const err = new Error("Invalid email address or password. Please try again.");
     err.invalid = true;
